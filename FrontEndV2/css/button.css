@@ -1,0 +1,405 @@
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    align-content: center
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 0.35rem;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #3a1353;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 7px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+.button1{
+  height: 20px;
+  width: 20px;
+  background-color: #3a1353;
+  border-color: #3a1353;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.35rem;
+}
+
+.button2{
+  text-align: left;
+  border-radius: 0.35rem;
+  position: absolute;
+    top: 110px;
+    right: 50px;
+    height: auto;
+    padding: 10px;
+}
+
+input[type="text"] {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(4em - 10px);
+  margin: 0 0 1em;
+  padding: 1em;
+  border: 1px solid #ccc;
+  background: #fff;
+  resize: none;
+  outline: none;
+  transition: all 0.2s;
+  border-right: none;
+  border-top: none;
+}
+
+input[type="text"]:focus{
+  border-left: 1px solid #ccc;
+  border-top-left-radius: 15px;
+  border-top: none;
+  border-right: none;
+}
+
+input[type="text"][required]:focus {
+  border-color: #3a1353;
+}
+input[type="text"][required]:focus + label[placeholder]:before {
+  color: #3a1353;
+}
+input[type="text"][required]:focus + label[placeholder]:before,
+input[type="text"][required]:valid + label[placeholder]:before {
+  transition-duration: .2s;
+  transform: translate(0, -1.5em) scale(0.9, 0.9);
+}
+
+input[type="text"][required]:invalid + label[placeholder][alt]:before {
+  content: attr(alt);
+}
+
+input[type="text"][required] + label[placeholder] {
+  display: block;
+  pointer-events: none;
+  line-height: 1em;
+  margin-top: calc(-3em - 2px);
+  margin-bottom: calc((3em - 1em) + 1px);
+}
+
+input[type="text"][required] + label[placeholder]:before {
+  content: attr(placeholder);
+  display: inline-block;
+  margin: 0 calc(1em + 2px);
+  padding: 0 2px;
+  color: #898989;
+  white-space: nowrap;
+  transition: 0.3s ease-in-out;
+  background-image: linear-gradient(to bottom, #fff, #fff);
+  background-size: 100% 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.file-upload-wrapper {
+  position: relative;
+  width: 300px;
+  height: 39px;
+}
+.file-upload-wrapper:after {
+  border: 1px solid #ccc;
+  content: attr(data-text);
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  padding: 5px 15px;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+  z-index: 20;
+  height: 100%;
+  color: #999;
+  border-radius: 5px 10px 10px 5px;
+  font-weight: 300;
+}
+.file-upload-wrapper input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  cursor: pointer;
+  width: 100%;
+}
+
+h1 .fa-check {
+  font-size: 30px;
+  margin-right: 10px;
+  color: #3a1353;
+}
+
+#list-list {
+  width: 500px;
+  margin: 0 auto 50px auto;
+  padding: 50px;
+  background: white;
+  position: relative;
+  /*box-shadow*/
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  /*border-radius*/
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#list-list:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /*box-shadow*/
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  top: 50%;
+  bottom: 0;
+  left: 10px;
+  right: 10px;
+  /*border-radius*/
+  -webkit-border-radius: 100px / 10px;
+  -moz-border-radius: 100px / 10px;
+  border-radius: 100px / 10px;
+}
+
+.list-wrap {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  /*box-shadow*/
+  -webkit-box-shadow: 0 2px 0 -1px #ebebeb;
+  -moz-box-shadow: 0 2px 0 -1px #ebebeb;
+  box-shadow: 0 2px 0 -1px #ebebeb;
+}
+
+.list-wrap:last-of-type {
+  /*box-shadow*/
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  height: 0;
+  width: 0;
+  opacity: 0;
+  top: -600px;
+}
+
+.list {
+  display: inline-block;
+  font-weight: 200;
+  padding: 10px 5px;
+  height: 37px;
+  position: relative;
+} 
+
+.list:after {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: 0;
+  height: 18px;
+  width: 18px;
+  top: 9px;
+  left: -25px;
+  /*box-shadow*/
+  -webkit-box-shadow: inset 0 0 0 2px #d8d8d8;
+  -moz-box-shadow: inset 0 0 0 2px #d8d8d8;
+  box-shadow: inset 0 0 0 2px #d8d8d8;
+  /*transition*/
+  -webkit-transition: .15s ease-in-out;
+  -moz-transition: .15s ease-in-out;
+  -o-transition: .15s ease-in-out;
+  transition: .15s ease-in-out;
+  /*border-radius*/
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.list:hover:after {
+  /*box-shadow*/
+  -webkit-box-shadow: inset 0 0 0 2px #949494;
+  -moz-box-shadow: inset 0 0 0 2px #949494;
+  box-shadow: inset 0 0 0 2px #949494;
+}
+
+.list .fa-check {
+  position: absolute;
+  z-index: 1;
+  left: -31px;
+  top: 0;
+  font-size: 1px;
+  line-height: 36px;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  color: transparent;
+}
+
+:checked+.list {
+  color: #3a1353;
+}
+
+:checked+.list:before {
+  width: 100%;
+}
+
+:checked+.list:after {
+  /*box-shadow*/
+  -webkit-box-shadow: inset 0 0 0 2px #3a1353;
+  -moz-box-shadow: inset 0 0 0 2px #3a1353;
+  box-shadow: inset 0 0 0 2px #3a1353;
+}
+
+:checked+.list .fa-check {
+  font-size: 20px;
+  line-height: 35px;
+  color: #3a1353;
+}
+
+.user-li{
+  text-decoration:none;
+  font-size:1.5em;
+  color:#DDD;
+  transition: all 0.2s;
+}
+.user-li:hover{
+  text-decoration: none;
+  color: #3a1353;
+}
+
+.loader {
+  position: relative;
+  width: 2.5em;
+  height: 2.5em;
+  transform: rotate(165deg);
+}
+.loader:before, .loader:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 0.25em;
+  transform: translate(-50%, -50%);
+}
+.loader:before {
+  animation: before 2s infinite;
+}
+.loader:after {
+  animation: after 2s infinite;
+}
+
+@keyframes before {
+  0% {
+    width: 0.5em;
+    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+  }
+  35% {
+    width: 2.5em;
+    box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
+  }
+  70% {
+    width: 0.5em;
+    box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
+  }
+  100% {
+    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+  }
+}
+@keyframes after {
+  0% {
+    height: 0.5em;
+    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+  }
+  35% {
+    height: 2.5em;
+    box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
+  }
+  70% {
+    height: 0.5em;
+    box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
+  }
+  100% {
+    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: calc(50% - 1.25em);
+  left: calc(50% - 1.25em);
+}

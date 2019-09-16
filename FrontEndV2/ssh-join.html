@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
+    <script src="static/socket.io.js"></script>
+    <script src="node_modules/xterm/dist/addons/fit/fit.js"></script>
+    <script src="node_modules/xterm/dist/xterm.js"></script>
+    <script src="static/ssh-join-script.js"></script>
+    <style>
+        .blur {
+            filter: blur(3px);
+            -webkit-filter: blur(3px);
+            -moz-filter: blur(3px);
+            -o-filter: blur(3px);
+            -ms-filter: blur(3px);
+        }
+    </style>
+</head>
+
+<body bgcolor="#121212" style="margin: 0px; padding:0px">
+    <div id="terminal" class="blur" style="margin:0px;top:0px;left:0px;height:100vh;width:100vw;overflow-y:hidden"></div>
+    <div id="session-container"
+        style="text-align: center;background:floralwhite; z-index: 1000000; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%)">
+        <label style="font-family: Quicksand; font-size: 100px" for="session">Session id:</label><br><input style="font-family: Quicksand;font-size: 100px" id="session" type="text"></div>
+</body>
+
+</html>
