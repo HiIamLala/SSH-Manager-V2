@@ -32,19 +32,19 @@ function ssh(token, callback) {
             };
             db.getItem(params, function (err, data) {
                 if (err) {
-                    error_log_stream.write(time + "|" + err + "|SSH|" + token);
+                    error_log_stream.write(time + "|" + err + "|SSH|" + token + "\n");
                     callback(err, null);
                 }
                 else if (dbconverter.unmarshall(data.Item).Instances[instanceID].Users[username].SSHToken === token) {
                     clearToken(projectID, instanceID, username, (err, result) => {
                         if (err) {
-                            error_log_stream.write(time + "|" + err + "|SSH|" + token);
+                            error_log_stream.write(time + "|" + err + "|SSH|" + token + "\n");
                             callback(err, null);
                         }
                         else {
                             getInstanceDetail(result.projectID,result.instanceID,(err2,result2)=>{
                                 if(err2){
-                                    error_log_stream.write(time + "|" + err + "|SSH|" + token);
+                                    error_log_stream.write(time + "|" + err + "|SSH|" + token + "\n");
                                     callback(err, null);
                                 }
                                 else{
@@ -60,12 +60,12 @@ function ssh(token, callback) {
             });
         }
         else {
-            error_log_stream.write(time + "| Expired token | " + token);
+            error_log_stream.write(time + "| Expired token | " + token + "\n");
             callback("Expired token", "Expired token");
         }
     }
     catch (err) {
-        error_log_stream.write(time + "|" + err + "|SSH|" + token);
+        error_log_stream.write(time + "|" + err + "|SSH|" + token + "\n");
     }
 }
 
@@ -94,7 +94,7 @@ function clearToken(projectID, instanceID, username, callback) {
     };
     db.updateItem(params, function (err, data) {
         if (err) {
-            error_log_stream.write(time + "|Clear token fail|" + projectID + "|" + instanceID + "|" + username);
+            error_log_stream.write(time + "|Clear token fail|" + projectID + "|" + instanceID + "|" + username + "\n");
             callback(err, null);
         }
         else {
@@ -124,7 +124,7 @@ function getInstanceDetail(projectID, instanceID, callback) {
     };
     db.getItem(params, function (err, data) {
         if (err) {
-            error_log_stream.write(time + "|Get instance detail fail|" + projectID + "|" + instanceID);
+            error_log_stream.write(time + "|Get instance detail fail|" + projectID + "|" + instanceID + "\n");
             callback(err, null);
         }
         else {

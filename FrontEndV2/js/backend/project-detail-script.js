@@ -31,7 +31,7 @@ $(document).ready(function () {
                     });
                     xhttp.onloadend = function () {
                         if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
-                            noti(new Date().getTime(),"Success", "Create instance success<br>Instance ID: " + JSON.parse(this.responseText).body);
+                            noti(new Date().getTime(), "Success", "Create instance success<br>Instance ID: " + JSON.parse(this.responseText).body);
                             $('#wrapper').removeClass('blur');
                             $('#create-instance-panel').css('display', 'none');
                             initProjectInstances();
@@ -52,7 +52,7 @@ $(document).ready(function () {
             }
             reader.readAsText($('#create-instance-ssh-key')[0].files[0]);
         });
-        $("#mod-project").on('click',function(){
+        $("#mod-project").on('click', function () {
             var xhttp = new XMLHttpRequest();
             xhttp.onloadend = function () {
                 if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
@@ -61,7 +61,7 @@ $(document).ready(function () {
                     var Auth = JSON.parse(window.localStorage.getItem("Auth"));
                     if (Auth.isAdmin) {
                         $('#del-project').fadeIn(1000);
-                        $('#mod-project').css('display','block');
+                        $('#mod-project').css('display', 'block');
                         $('#modify-users-project').fadeIn(1000);
                     }
                     $("#modify-project-company-name").val(result.CompanyName);
@@ -80,7 +80,7 @@ $(document).ready(function () {
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
         });
-        $('#confirm-modify-project').on('click',function(){
+        $('#confirm-modify-project').on('click', function () {
             var xhttp = new XMLHttpRequest();
             var data = JSON.stringify({
                 "ID": parseInt(parseURLParams(window.location.href).id),
@@ -88,56 +88,56 @@ $(document).ready(function () {
                 "project_name": $("#modify-project-name").val(),
                 "project_manager": $("#project-modify-manager").val()
             });
-            xhttp.onloadend = function(){
+            xhttp.onloadend = function () {
                 if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                     noti(new Date().getTime(), "Success", "Modify project successfuly")
                     $('#wrapper').removeClass('blur');
-                    $('#modify-project').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                    $('#modify-project').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                     initProjectDetail();
                 }
-                else if(this.status == 200 && JSON.parse(this.responseText).statusCode == 403){
+                else if (this.status == 200 && JSON.parse(this.responseText).statusCode == 403) {
                     noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission to modify this project");
-                    $("#mod-project").fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                    $("#mod-project").fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                 }
-                else if(this.status == 401) {
+                else if (this.status == 401) {
                     reAuth();
                 }
-                else{
+                else {
                     noti(new Date().getTime(), `<font color="red">Fail</font>`, this.responseText);
                 }
             }
-            xhttp.open("POST","https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/update-project-detail",true);
+            xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/update-project-detail", true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(data);
         });
-        $('#del-project').click(function(){
-            if(window.confirm("Are you sure want to delete this project? This can NOT be undone!")){
+        $('#del-project').click(function () {
+            if (window.confirm("Are you sure want to delete this project? This can NOT be undone!")) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onloadend = function () {
                     if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                         window.location.replace("admin-projects.html");
                     }
-                    else{
-                        noti(new Date().getTime(),`<font color="red">Fail</font>`, `Delete project ${parseURLParams(window.location.href).id} fail <br> ${JSON.parse(this.responseText).body}`);
+                    else {
+                        noti(new Date().getTime(), `<font color="red">Fail</font>`, `Delete project ${parseURLParams(window.location.href).id} fail <br> ${JSON.parse(this.responseText).body}`);
                     }
                 }
-                xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeproject?id="+parseURLParams(window.location.href).id, true);
+                xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeproject?id=" + parseURLParams(window.location.href).id, true);
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send();
             }
         });
         $('#dataTable tbody').on('click', 'button', function () {
-            $("#instance-user-preload").css("display","block");
+            $("#instance-user-preload").css("display", "block");
             var projectID = parseURLParams(window.location.href).id;
             var instanceID = $(this).parents('tr')["0"].cells["0"].innerText;
-            if(event.target.innerHTML=="Modify"){
+            if (event.target.innerHTML == "Modify") {
                 var xhttp = new XMLHttpRequest();
-                xhttp.onloadend = function(){
-                    if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+                xhttp.onloadend = function () {
+                    if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                         document.getElementById("modify-instance-form").reset();
                         $("#modify-instance-id").val(instanceID);
-                        getlistuserofproject(projectID,instanceID);
+                        getlistuserofproject(projectID, instanceID);
                         $('#confirm-modify-instance').html("Update");
                         $('#confirm-modify-instance').removeClass("btn-danger");
                         $('#confirm-modify-instance').prop('disabled', false);
@@ -149,31 +149,31 @@ $(document).ready(function () {
                         $('#modify-instance-panel').fadeIn(1000);
                         $('#wrapper').addClass('blur');
                     }
-                    else if(JSON.parse(this.responseText).statusCode == 403){
-                        noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
+                    else if (JSON.parse(this.responseText).statusCode == 403) {
+                        noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
                         $('#wrapper').removeClass('blur');
-                        $('#modify-instance-panel').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                        $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                         document.getElementById("modify-instance-form").reset();
                     }
-                    else if(this.status == 401){
+                    else if (this.status == 401) {
                         reAuth();
                     }
-                    else{
-                        noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
+                    else {
+                        noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
                     }
                 }
-                xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
+                xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`, true);
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send();
             }
-            else{
-                // go to isntance log
+            else {
+                window.location.replace(`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
             }
         });
-        $("#confirm-modify-instance").on('click',function(){
+        $("#confirm-modify-instance").on('click', function () {
             var xhttp = new XMLHttpRequest();
             var users = [];
-            $('#instance-list-user-data').find(':checked').each((index,element)=>{
+            $('#instance-list-user-data').find(':checked').each((index, element) => {
                 users.push(element.getAttribute('username'));
             });
             var data = JSON.stringify({
@@ -181,52 +181,52 @@ $(document).ready(function () {
                 "instanceID": $("#modify-instance-id").val(),
                 "users": users
             })
-            xhttp.onloadend = function(){
-                if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+            xhttp.onloadend = function () {
+                if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                     modifyInstanceProps();
                 }
-                else if(JSON.parse(this.responseText).statusCode == 403){
-                    noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
+                else if (JSON.parse(this.responseText).statusCode == 403) {
+                    noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
                 }
-                else if(this.status == 401){
+                else if (this.status == 401) {
                     reAuth();
                 }
-                else{
-                    noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
+                else {
+                    noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
                 }
             }
-            xhttp.open('POST','https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers',true);
+            xhttp.open('POST', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers', true);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send(data);
         });
-        $('#modify-users-project').on("click",function(){
+        $('#modify-users-project').on("click", function () {
             getAllUser();
         });
-        $('#delete-instance').on('click',function(){
+        $('#delete-instance').on('click', function () {
             var xhttp = new XMLHttpRequest();
-            xhttp.onloadend = function(){
-                if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
-                    noti(new Date().getTime(),"Success", `Deleted instance (id: ${$("#modify-instance-id").val()})`)
+            xhttp.onloadend = function () {
+                if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                    noti(new Date().getTime(), "Success", `Deleted instance (id: ${$("#modify-instance-id").val()})`)
                     initProjectInstances();
                     $('#wrapper').removeClass('blur');
-                    $('#modify-instance-panel').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                    $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                     document.getElementById("modify-instance-form").reset();
                 }
-                else if(JSON.parse(this.responseText).statusCode == 403){
-                    noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
+                else if (JSON.parse(this.responseText).statusCode == 403) {
+                    noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
                     $('#wrapper').removeClass('blur');
-                    $('#modify-instance-panel').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                    $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                     document.getElementById("modify-instance-form").reset();
                 }
-                else if(this.status == 401){
+                else if (this.status == 401) {
                     reAuth();
                 }
-                else{
-                    noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
+                else {
+                    noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
                 }
             }
-            xhttp.open('GET',`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeinstance?projectid=${parseURLParams(window.location.href).id}&instanceid=${$("#modify-instance-id").val()}`,true);
+            xhttp.open('GET', `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeinstance?projectid=${parseURLParams(window.location.href).id}&instanceid=${$("#modify-instance-id").val()}`, true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
         })
@@ -237,25 +237,25 @@ $(document).ready(function () {
     }
 });
 
-function reAuth(){
+function reAuth() {
     $('#loader').fadeIn(500);
     var Auth = JSON.parse(window.localStorage.getItem("Auth"));
     var xhttp = new XMLHttpRequest();
     var data = JSON.stringify({ "username": Auth.username, "refreshToken": Auth.RefreshToken });
     xhttp.onloadend = function () {
         if (this.status == 200) {
-        var result = JSON.parse(this.responseText);
-        if (result.errorType) {
-            window.localStorage.removeItem('Auth');
-            window.location.replace('login.html');
-        }
-        else {
-            var auth = result.body.AuthenticationResult;
-            auth.username = Auth.username;
-            auth.timeAcquired = new Date().getTime();
-            window.localStorage.setItem('Auth', JSON.stringify(auth));
-            window.location.reload();
-        }
+            var result = JSON.parse(this.responseText);
+            if (result.errorType) {
+                window.localStorage.removeItem('Auth');
+                window.location.replace('login.html');
+            }
+            else {
+                var auth = result.body.AuthenticationResult;
+                auth.username = Auth.username;
+                auth.timeAcquired = new Date().getTime();
+                window.localStorage.setItem('Auth', JSON.stringify(auth));
+                window.location.reload();
+            }
         }
         else {
             window.localStorage.removeItem('Auth');
@@ -300,7 +300,7 @@ function initProjectInstances() {
                 Object.keys(result).forEach(instance => {
                     instance_list.push([instance, result[instance].InstanceProps.InstanceName, result[instance].InstanceProps.IPAddress]);
                 });
-                if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
+                if ($.fn.dataTable.isDataTable('#dataTable')) {
                     table.destroy();
                 }
                 table = $('#dataTable').DataTable({
@@ -336,10 +336,10 @@ function initProjectInstances() {
                         </tr>
                         `);
         }
-        else if(this.status == 401){
+        else if (this.status == 401) {
             reAuth();
         }
-        else{
+        else {
             console.log(this);
         }
     };
@@ -400,19 +400,19 @@ function noti(id, header, content) {
         </div>
     </div>`
     );
-    $(`#${id}`).toast({delay:10000});
+    $(`#${id}`).toast({ delay: 10000 });
     $(`#${id}`).toast("show");
 }
 
-function getAllUser(){
+function getAllUser() {
     $('#modify-users-project').unbind();
-    $('#dev-list').css('display','none');
+    $('#dev-list').css('display', 'none');
     $("#dev-list").html("");
     $('#dev-preload').css("display", "block");
     var xhttp = new XMLHttpRequest();
-    xhttp.onloadend = function(){
-        if(this.status==200 && JSON.parse(this.responseText).statusCode==200) {
-            function createUser(user_name){
+    xhttp.onloadend = function () {
+        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+            function createUser(user_name) {
                 $("#dev-list").append(`
                 <span class="list-wrap">
                     <input type="checkbox" id="project-user-${user_name}" username="${user_name}"/>
@@ -428,10 +428,10 @@ function getAllUser(){
                 createUser(element);
             });
             var xhttp = new XMLHttpRequest();
-            xhttp.onloadend = function(){
+            xhttp.onloadend = function () {
                 $('#dev-preload').css("display", "none");
-                if(this.status==200 && JSON.parse(this.responseText).statusCode == 200) {
-                    function checkUser(user_name){
+                if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                    function checkUser(user_name) {
                         $(`#project-user-${user_name}`).prop('checked', true);
                     }
                     data = JSON.parse(this.responseText).body;
@@ -439,9 +439,9 @@ function getAllUser(){
                         checkUser(element);
                     });
                     $('#dev-list').fadeIn(250);
-                    $('#modify-users-project').on("click",function(){
+                    $('#modify-users-project').on("click", function () {
                         var users = [];
-                        $('#dev-list').find(':checked').each((index,element)=>{
+                        $('#dev-list').find(':checked').each((index, element) => {
                             users.push(element.getAttribute('username'));
                         });
                         var xhttp = new XMLHttpRequest();
@@ -449,40 +449,40 @@ function getAllUser(){
                             "projectID": parseURLParams(window.location.href).id,
                             "users": users
                         });
-                        xhttp.onloadend = function(){
-                            if(this.status==200 && JSON.parse(this.responseText).statusCode == 200) {
-                                noti(new Date().getTime(),"Success", "Project's developer list updated successfuly");
+                        xhttp.onloadend = function () {
+                            if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                                noti(new Date().getTime(), "Success", "Project's developer list updated successfuly");
                                 $('#modify-users-project').unbind();
-                                $('#modify-users-project').on("click",function(){
+                                $('#modify-users-project').on("click", function () {
                                     getAllUser();
                                 });
                                 initProjectDevelopers();
                             }
-                            else if(JSON.parse(this.responseText).statusCode == 403){
-                                noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission to change this project's developer list");
+                            else if (JSON.parse(this.responseText).statusCode == 403) {
+                                noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission to change this project's developer list");
                                 initProjectDevelopers();
                                 $('#modify-users-project').unbind();
-                                $('#modify-users-project').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+                                $('#modify-users-project').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
                             }
-                            else{
+                            else {
                                 reAuth();
                             }
                         }
-                        xhttp.open("POST",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateprojectusers`,true);
+                        xhttp.open("POST", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateprojectusers`, true);
                         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                         xhttp.setRequestHeader("Content-Type", "application/json");
                         xhttp.send(data);
                     });
                 }
-                else{
+                else {
                     reAuth();
                 }
             };
-            xhttp.open("GET",  `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=${parseURLParams(window.location.href).id}`, true);
+            xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=${parseURLParams(window.location.href).id}`, true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
         }
-        else{
+        else {
             reAuth();
         }
     };
@@ -491,13 +491,13 @@ function getAllUser(){
     xhttp.send();
 }
 
-function getlistuserofproject(projectID,instanceID){
-    $("#instance-list-user-data").css("display","none");
+function getlistuserofproject(projectID, instanceID) {
+    $("#instance-list-user-data").css("display", "none");
     $("#instance-list-user-data").html("");
     var xhttp = new XMLHttpRequest();
-    xhttp.onloadend = function(){
-        if(this.status==200 && JSON.parse(this.responseText).statusCode==200) {
-            function createUser(user_name){
+    xhttp.onloadend = function () {
+        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+            function createUser(user_name) {
                 $("#instance-list-user-data").append(`
                 <span class="list-wrap">
                     <input type="checkbox" id="instance-user-${user_name}" username="${user_name}"/>
@@ -514,7 +514,7 @@ function getlistuserofproject(projectID,instanceID){
             });
             getlistuserofinstance(instanceID);
         }
-        else{
+        else {
             reAuth();
         }
     };
@@ -523,14 +523,14 @@ function getlistuserofproject(projectID,instanceID){
     xhttp.send();
 }
 
-function getlistuserofinstance(instance_id){
+function getlistuserofinstance(instance_id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onloadend = function(){
+    xhttp.onloadend = function () {
         $('#confirm-modify-instance').prop('disabled', false);
-        $('#instance-user-preload').css("display","none");
-        $("#instance-list-user-data").css("display","block");
-        if(this.status==200 && JSON.parse(this.responseText).statusCode == 200) {
-            function checkUser(user_name){
+        $('#instance-user-preload').css("display", "none");
+        $("#instance-list-user-data").css("display", "block");
+        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+            function checkUser(user_name) {
                 $(`#instance-user-${user_name}`).prop('checked', true);
             }
             data = JSON.parse(this.responseText).body;
@@ -538,11 +538,11 @@ function getlistuserofinstance(instance_id){
                 checkUser(element);
             });
         }
-        else{
+        else {
             reAuth();
         }
     };
-    xhttp.open("GET",  `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listinstanceusers?projectid=${parseURLParams(window.location.href).id}&instanceid=${instance_id}`, true);
+    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listinstanceusers?projectid=${parseURLParams(window.location.href).id}&instanceid=${instance_id}`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -550,7 +550,7 @@ function getlistuserofinstance(instance_id){
 function modifyInstanceProps() {
     var xhttp = new XMLHttpRequest();
     var data = JSON.stringify({
-        "instanceProps" :{
+        "instanceProps": {
             "IPAddress": $("#modify-instance-ip").val(),
             "InstanceName": $("#modify-instance-name").val(),
             "ARN": $("#modify-instance-arn").val(),
@@ -559,26 +559,26 @@ function modifyInstanceProps() {
         "instanceID": $("#modify-instance-id").val(),
         "projectID": parseURLParams(window.location.href).id
     });
-    xhttp.onloadend = function(){
-        if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+    xhttp.onloadend = function () {
+        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
             $('#wrapper').removeClass('blur');
-            $('#modify-instance-panel').fadeOut(1000,()=>{$('#wrapper').removeClass('blur');});
+            $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
             initProjectInstances();
             noti(new Date().getTime(), "Success", `Instance update successfuly`);
         }
-        else if(JSON.parse(this.responseText).statusCode == 403){
+        else if (JSON.parse(this.responseText).statusCode == 403) {
             $('#confirm-modify-instance').html("Forbidden");
             $('#confirm-modify-instance').addClass("btn-danger");
             $('#confirm-modify-instance').prop('disabled', true);
         }
-        else if(this.status == 401){
+        else if (this.status == 401) {
             reAuth();
         }
-        else{
-            noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
+        else {
+            noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
         }
     }
-    xhttp.open("POST",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstancedetail`,true);
+    xhttp.open("POST", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstancedetail`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
@@ -586,27 +586,27 @@ function modifyInstanceProps() {
 function getlistuser(user) {
     var xhttp = new XMLHttpRequest();
     xhttp.onloadend = function () {
-      if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
-        function createUser(user_name) {
-          $("#project-modify-manager").append(`<option data-tokens="${user_name}">${user_name}</option>`);
+        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+            function createUser(user_name) {
+                $("#project-modify-manager").append(`<option data-tokens="${user_name}">${user_name}</option>`);
+            }
+            data = JSON.parse(this.responseText).body;
+            data.forEach(element => {
+                createUser(element);
+            });
+            $('#project-modify-manager').selectpicker('refresh');
+            $('#project-modify-manager').selectpicker('val', user);
         }
-        data = JSON.parse(this.responseText).body;
-        data.forEach(element => {
-          createUser(element);
-        });
-        $('#project-modify-manager').selectpicker('refresh');
-        $('#project-modify-manager').selectpicker('val',user);
-      }
-      else{
-        reAuth();
-      }
+        else {
+            reAuth();
+        }
     };
     xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listalluser`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
-  }
+}
 
-  function initProjectDetail(){
+function initProjectDetail() {
     var xhttp = new XMLHttpRequest();
     xhttp.onloadend = function () {
         if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
@@ -614,10 +614,10 @@ function getlistuser(user) {
             var Auth = JSON.parse(window.localStorage.getItem("Auth"));
             if (Auth.isAdmin || Auth.username == result.ProjectManager) {
                 $('#del-project').css('display', 'block');
-                $('#mod-project').css('display','block');
+                $('#mod-project').css('display', 'block');
                 $('#modify-users-project').css('display', 'block');
             }
-            
+
             $('#project-name').html(`Project ${result.ProjectName}`);
             $('#project-detail').html(`
                 <ul>
@@ -639,4 +639,4 @@ function getlistuser(user) {
     xhttp.open('GET', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/projectdetail?id=' + parseURLParams(window.location.href).id, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
-  }
+}

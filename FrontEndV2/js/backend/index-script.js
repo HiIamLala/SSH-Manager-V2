@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else{
             $('#greeting').html(`Hello, ${Auth.username}`);
+            $('a[href="instances.html"]').css("display","none");
         }
         $('#logout-butt').click(ev=>{
             window.localStorage.removeItem('Auth');

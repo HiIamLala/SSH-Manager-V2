@@ -28,21 +28,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     Terminal.applyAddon(fit);
     var terminalContainer = document.getElementById('terminal');
-    term = new Terminal({ cursorBlink: true });
+    term = new Terminal({
+        cursorBlink: true ,
+        theme: {
+            background: '#121212',
+        },});
     term.open(terminalContainer);
+    term.fit();
     window.onresize = function (event) {
         term.fit();
     };
-    var fileInput = document.getElementById('file');
-    fileInput.addEventListener('change', function (e) {
-        var file = fileInput.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            rec = JSON.parse(reader.result);
+    var projectID = parseURLParams(window.location.href).projectid;
+    var instanceID = parseURLParams(window.location.href).instanceid;
+    var username = parseURLParams(window.location.href).username;
+    var logname = parseURLParams(window.location.href).logname;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onloadend = function(){
+        if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+            var result = JSON.parse(this.responseText).body;
+            rec = JSON.parse(result);
             render(rec,current);
         }
-        reader.readAsText(file);
-    });
+        else if(JSON.parse(this.responseText).statusCode == 403){
+            term.write("Forbidden. You don't have permission to read this log");
+        }
+        else{
+            console.log(this);
+        }
+    }
+    xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}`,true);
+    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+    xhttp.send();
 });
 
 function render(rec,i) {
@@ -63,3 +79,23 @@ function render(rec,i) {
         },(rec[i].time-rec[i-1].time)/speed);
     }
 };
+
+function parseURLParams(url) {
+    var queryStart = url.indexOf("?") + 1,
+        queryEnd = url.indexOf("#") + 1 || url.length + 1,
+        query = url.slice(queryStart, queryEnd - 1),
+        pairs = query.replace(/\+/g, " ").split("&"),
+        parms = {}, i, n, v, nv;
+
+    if (query === url || query === "") return;
+
+    for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+    }
+    return parms;
+}

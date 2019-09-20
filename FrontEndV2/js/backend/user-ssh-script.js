@@ -65,7 +65,7 @@ $(document).ready(function () {
                                 xhttp.onloadend = function () {
                                     if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                                         var token = JSON.parse(this.responseText).body;
-                                        var win = window.open(`ssh-client.html?access=${JSON.parse(window.localStorage.getItem('Auth')).AccessToken}&token=${token}`, "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600");
+                                        window.open(`ssh-client.html?access=${JSON.parse(window.localStorage.getItem('Auth')).AccessToken}&token=${token}`, "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600");
                                     }
                                     else {
                                         console.log(this);

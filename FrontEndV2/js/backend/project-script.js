@@ -4,13 +4,18 @@ $(document).ready(function () {
   try {
     getlistuser();
     initProjectList();
-    $('#add-project').click(function () {
-      $('#confirm-create-project').html("Create");
-      $('#confirm-create-project').removeClass("btn-danger");
-      $('#confirm-create-project').prop('disabled', false);
-      $('#wrapper').addClass('blur');
-      $('#create-project').fadeIn(1000);
-    });
+    if(JSON.parse(window.localStorage.getItem("Auth")).isAdmin){
+      $('#add-project').click(function () {
+        $('#confirm-create-project').html("Create");
+        $('#confirm-create-project').removeClass("btn-danger");
+        $('#confirm-create-project').prop('disabled', false);
+        $('#wrapper').addClass('blur');
+        $('#create-project').fadeIn(1000);
+      });
+    }
+    else{
+      $('#add-project').css("display","none");
+    }
     $('#confirm-create-project').click(function () {
       if ($("#create-project-name").val() && $("#project-create-manager").val() != "" && $("#create-project-company-name").val()) {
         $('#confirm-create-project').attr("disabled", "true");

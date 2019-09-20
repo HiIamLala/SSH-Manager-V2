@@ -1,110 +1,115 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function () {
     try {
-        $('#instance-preload').css("display", "block");
-        var xhttp = new XMLHttpRequest();
-        xhttp.onloadend = function () {
-            $('#instance-preload').css("display", "none");
-            if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
-                $("#dataTable-body").html("");
-                var result = JSON.parse(this.responseText).body;
-                var instance_list = [];
-                result.forEach(element => {
-                    Object.keys(element.Instances).forEach(instance => {
-                        instance_list.push([element.ID, element.ProjectProps.ProjectName, instance, element.Instances[instance].InstanceProps.InstanceName, element.Instances[instance].InstanceProps.IPAddress]);
-                    })
-                });
-                $('#dataTable').DataTable({
-                    data: instance_list,
-                    "columnDefs": [{
-                        "targets": -1,
-                        "data": null,
-                        "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Modify</button>`
-                    },
-                    {
-                        "targets": -2,
-                        "data": null,
-                        "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Log</button>`
-                    }]
-                });
-                $('#dataTable tbody').on('click', 'button', function () {
-                    var projectID = $(this).parents('tr')["0"].cells["0"].innerText;
-                    var instanceID = $(this).parents('tr')["0"].cells["2"].innerText;
-                    if(event.target.innerText == "Modify"){
-                        $("#instance-user-preload").css("display","block");
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.onloadend = function(){
-                            if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
-                                $("#modify-instance-project").val(projectID);
-                                $("#modify-instance-id").val(instanceID);
-                                getlistuserofproject(projectID);
-                                $('#confirm-modify-instance').html("Update");
-                                $('#confirm-modify-instance').removeClass("btn-danger");
-                                $('#confirm-modify-instance').prop('disabled', false);
-                                $('#wrapper').addClass('blur');
-                                $('#modify-instance-panel').fadeIn(1000);
-                                var result = JSON.parse(this.responseText).body;
-                                $("#modify-instance-name").val(result.InstanceName);
-                                $("#modify-instance-ip").val(result.IPAddress);
-                                $("#modify-instance-arn").val(result.ARN);
-                                $("#modify-instance-ssh-user").val(result.InstanceUser);
+        if(JSON.parse(window.localStorage.getItem("Auth")).isAdmin){
+            $('#instance-preload').css("display", "block");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onloadend = function () {
+                $('#instance-preload').css("display", "none");
+                if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                    $("#dataTable-body").html("");
+                    var result = JSON.parse(this.responseText).body;
+                    var instance_list = [];
+                    result.forEach(element => {
+                        Object.keys(element.Instances).forEach(instance => {
+                            instance_list.push([element.ID, element.ProjectProps.ProjectName, instance, element.Instances[instance].InstanceProps.InstanceName, element.Instances[instance].InstanceProps.IPAddress]);
+                        })
+                    });
+                    $('#dataTable').DataTable({
+                        data: instance_list,
+                        "columnDefs": [{
+                            "targets": -1,
+                            "data": null,
+                            "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Modify</button>`
+                        },
+                        {
+                            "targets": -2,
+                            "data": null,
+                            "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Log</button>`
+                        }]
+                    });
+                    $('#dataTable tbody').on('click', 'button', function () {
+                        var projectID = $(this).parents('tr')["0"].cells["0"].innerText;
+                        var instanceID = $(this).parents('tr')["0"].cells["2"].innerText;
+                        if(event.target.innerText == "Modify"){
+                            $("#instance-user-preload").css("display","block");
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onloadend = function(){
+                                if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+                                    $("#modify-instance-project").val(projectID);
+                                    $("#modify-instance-id").val(instanceID);
+                                    getlistuserofproject(projectID);
+                                    $('#confirm-modify-instance').html("Update");
+                                    $('#confirm-modify-instance').removeClass("btn-danger");
+                                    $('#confirm-modify-instance').prop('disabled', false);
+                                    $('#wrapper').addClass('blur');
+                                    $('#modify-instance-panel').fadeIn(1000);
+                                    var result = JSON.parse(this.responseText).body;
+                                    $("#modify-instance-name").val(result.InstanceName);
+                                    $("#modify-instance-ip").val(result.IPAddress);
+                                    $("#modify-instance-arn").val(result.ARN);
+                                    $("#modify-instance-ssh-user").val(result.InstanceUser);
+                                }
+                                else if(JSON.parse(this.responseText).statusCode == 403){
+                                    noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on any instance");
+                                }
+                                else if(this.status == 401){
+                                    reAuth();
+                                }
+                                else{
+                                    noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
+                                }
                             }
-                            else if(JSON.parse(this.responseText).statusCode == 403){
-                                noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
-                            }
-                            else if(this.status == 401){
-                                reAuth();
-                            }
-                            else{
-                                noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
-                            }
+                            xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
+                            xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                            xhttp.send();
                         }
-                        xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
-                        xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
-                        xhttp.send();
+                        else{
+                            window.location.replace(`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
+                        }
+                    });
+                }
+                else {
+                    noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on any instance");
+                }
+            };
+            xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listallinstances", true);
+            xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+            xhttp.send();
+            $("#confirm-modify-instance").on('click',function(){
+                var xhttp = new XMLHttpRequest();
+                var users = [];
+                $('#instance-list-user-data').find(':checked').each((index,element)=>{
+                    users.push(element.getAttribute('username'));
+                });
+                var data = JSON.stringify({
+                    "projectID": parseURLParams(window.location.href).id,
+                    "instanceID": $("#modify-instance-id").val(),
+                    "users": users
+                })
+                xhttp.onloadend = function(){
+                    if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+                        modifyInstanceProps();
+                    }
+                    else if(JSON.parse(this.responseText).statusCode == 403){
+                        noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
+                    }
+                    else if(this.status == 401){
+                        reAuth();
                     }
                     else{
-
+                        noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
                     }
-                });
-            }
-            else {
-                noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
-            }
-        };
-        xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listallinstances", true);
-        xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
-        xhttp.send();
-        $("#confirm-modify-instance").on('click',function(){
-            var xhttp = new XMLHttpRequest();
-            var users = [];
-            $('#instance-list-user-data').find(':checked').each((index,element)=>{
-                users.push(element.getAttribute('username'));
+                }
+                xhttp.open('POST','https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers',true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                xhttp.send(data);
             });
-            var data = JSON.stringify({
-                "projectID": parseURLParams(window.location.href).id,
-                "instanceID": $("#modify-instance-id").val(),
-                "users": users
-            })
-            xhttp.onloadend = function(){
-                if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
-                    modifyInstanceProps();
-                }
-                else if(JSON.parse(this.responseText).statusCode == 403){
-                    noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on this instance");
-                }
-                else if(this.status == 401){
-                    reAuth();
-                }
-                else{
-                    noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
-                }
-            }
-            xhttp.open('POST','https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers',true);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
-            xhttp.send(data);
-        });
+        }
+        else{
+            window.location.replace('access-denied.html');
+        }
     }
     catch (err) {
         console.log(err);
