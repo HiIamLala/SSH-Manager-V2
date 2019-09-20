@@ -97,7 +97,7 @@ var init = function(){
                             io.to(ssh_session).emit('data', '\r\n*** SSH CONNECTION ERROR: ' + err.message + ' ***\r\n');
                             client.disconnect();
                         }).connect({
-                            host: result.InstanceProps.InstanceIP ,
+                            host: result.InstanceProps.IPAddress ,
                             port: 22,
                             username:  result.InstanceProps.InstanceUser,
                             privateKey: result.SSHKey
