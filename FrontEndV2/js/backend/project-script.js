@@ -50,7 +50,7 @@ $(document).ready(function () {
   }
   catch (err) {
     console.log(err);
-    //window.location.replace('login.html');
+    //window.location.href = ('login.html');
   }
 });
 
@@ -105,7 +105,7 @@ function initProjectList() {
       $('#dataTable tbody').on('click', 'button', function () {
         var projectID = $(this).parents('tr')["0"].cells["0"].innerText;
         // show project detail
-        window.location.replace('project.html?id=' + projectID);
+        window.location.href = ('project.html?id=' + projectID);
       });
     }
     else {
@@ -127,7 +127,7 @@ function reAuth() {
       var result = JSON.parse(this.responseText);
       if (result.errorType) {
         window.localStorage.removeItem('Auth');
-        window.location.replace('login.html');
+        window.location.href = ('login.html');
       }
       else {
         var auth = result.body.AuthenticationResult;
@@ -139,7 +139,7 @@ function reAuth() {
     }
     else {
       window.localStorage.removeItem('Auth');
-      window.location.replace('login.html');
+      window.location.href = ('login.html');
     }
   };
   xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);

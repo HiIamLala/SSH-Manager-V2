@@ -65,7 +65,7 @@ $(document).ready(function () {
                             xhttp.send();
                         }
                         else{
-                            window.location.replace(`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
+                            window.location.href = (`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
                         }
                     });
                 }
@@ -108,12 +108,12 @@ $(document).ready(function () {
             });
         }
         else{
-            window.location.replace('access-denied.html');
+            window.location.href = ('access-denied.html');
         }
     }
     catch (err) {
         console.log(err);
-        //window.location.replace('login.html');
+        //window.location.href = ('login.html');
     }
 });
 
@@ -183,7 +183,7 @@ function reAuth() {
             var result = JSON.parse(this.responseText);
             if (result.errorType) {
                 window.localStorage.removeItem('Auth');
-                window.location.replace('login.html');
+                window.location.href = ('login.html');
             }
             else {
                 var auth = result.body.AuthenticationResult;
@@ -195,7 +195,7 @@ function reAuth() {
         }
         else {
             window.localStorage.removeItem('Auth');
-            window.location.replace('login.html');
+            window.location.href = ('login.html');
         }
     };
     xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);

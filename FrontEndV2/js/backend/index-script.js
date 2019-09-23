@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     var result = JSON.parse(this.responseText);
                     if(result.errorType){
                         window.localStorage.removeItem('Auth');
-                        window.location.replace('login.html');
+                        window.location.href = ('login.html');
                     }
                     else{
                         var auth = result.body.AuthenticationResult;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 else{
                     window.localStorage.removeItem('Auth');
-                    window.location.replace('login.html');
+                    window.location.href = ('login.html');
                 }
             };
             xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
@@ -40,6 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     catch(err) {
         console.log(err);
-        window.location.replace('login.html');
+        window.location.href = ('login.html');
     }
 });

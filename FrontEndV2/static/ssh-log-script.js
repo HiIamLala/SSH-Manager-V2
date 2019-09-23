@@ -42,12 +42,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var instanceID = parseURLParams(window.location.href).instanceid;
     var username = parseURLParams(window.location.href).username;
     var logname = parseURLParams(window.location.href).logname;
+    var log = "";
+    term.write(`Receiving log (0%)...\n`);
     var xhttp = new XMLHttpRequest();
     xhttp.onloadend = function(){
         if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
-            var result = JSON.parse(this.responseText).body;
-            rec = JSON.parse(result);
-            render(rec,current);
+            term.reset();
+            term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...\n`);
+            log += JSON.parse(this.responseText).body;
+            if(parseInt(JSON.parse(this.responseText).nextoffset)>parseInt(JSON.parse(this.responseText).size)){
+                term.reset();
+                rec = JSON.parse(log);
+                render(rec,current);
+            }
+            else{
+                getLogData(log,projectID,instanceID,username,logname,JSON.parse(this.responseText).nextoffset);
+            }
         }
         else if(JSON.parse(this.responseText).statusCode == 403){
             term.write("Forbidden. You don't have permission to read this log");
@@ -56,9 +66,37 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(this);
         }
     }
-    xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}`,true);
+    xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=0`,true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
+
+    function getLogData(log,projectID,instanceID,username,logname,offset){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onloadend = function(){
+        if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
+            term.reset();
+            term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...`);
+            log += JSON.parse(this.responseText).body;
+            if(parseInt(JSON.parse(this.responseText).nextoffset)>parseInt(JSON.parse(this.responseText).size)){
+                term.reset();
+                rec = JSON.parse(log);
+                render(rec,current);
+            }
+            else{
+                getLogData(log,projectID,instanceID,username,logname,JSON.parse(this.responseText).nextoffset);
+            }
+        }
+        else if(JSON.parse(this.responseText).statusCode == 403){
+            term.write("Forbidden. You don't have permission to read this log");
+        }
+        else{
+            console.log(this);
+        }
+    }
+    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=${offset}`, true);
+    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+    xhttp.send();
+    }
 });
 
 function render(rec,i) {

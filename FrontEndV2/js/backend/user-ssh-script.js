@@ -97,14 +97,11 @@ $(document).ready(function () {
                     xhttp.send();
                 });
             }
-            else if(this.status == 401){
-                reAuth();
-            }
             else if (this.status == 200 && JSON.parse(this.responseText).statusCode == 204){
                 $("#project-list").html("You are not assigned to any projects. Please contact your administrator.")
             }
             else{
-                console.log(this);
+                reAuth();
             }
         };
         xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojects", true);
@@ -113,7 +110,7 @@ $(document).ready(function () {
     }
     catch (err) {
         console.log(err);
-        window.location.replace('login.html');
+        window.location.href = ('login.html');
     }
 });
 
@@ -138,7 +135,7 @@ function reAuth() {
             var result = JSON.parse(this.responseText);
             if (result.errorType) {
                 window.localStorage.removeItem('Auth');
-                window.location.replace('login.html');
+                window.location.href = ('login.html');
             }
             else {
                 var auth = result.body.AuthenticationResult;
@@ -150,7 +147,7 @@ function reAuth() {
         }
         else {
             window.localStorage.removeItem('Auth');
-            window.location.replace('login.html');
+            window.location.href = ('login.html');
         }
     };
     xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
