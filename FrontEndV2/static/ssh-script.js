@@ -10,6 +10,13 @@ var keyCode = {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    //Prevent browser default key
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = 'Are you sure to leave this SSH session?\n'
+                                + 'If you want to use key combination. User Alt instead of Ctrl \n(Example: [Alt + W] instead of [Ctrl + W])';
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
     var credentials = parseURLParams(window.location.href); 
     Terminal.applyAddon(fit);
     var terminalContainer = document.getElementById('terminal');
