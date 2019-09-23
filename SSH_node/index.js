@@ -68,13 +68,12 @@ var init = function(){
                                     if (err)
                                         return client.emit('data', '\r\n*** SSH SHELL ERROR: ' + err.message + ' ***\r\n');
                                     else {
-                                        result_log_stream.write('[{"time":' + new Date().getTime() + ', "value": "User connect established"}');
+                                        result_log_stream.write('[{"time":' + new Date().getTime() + ', "value": "User connect established\n"}');
                                         client.on('data', function (data) {
                                             usercmd_log_stream.write(data);
                                             stream.write(data);
                                         });
                                         client.on('setsize', function (data) {
-                                            console.log("Client request change size to " + data.rows + " rows " + data.cols + " cols");
                                             stream.setWindow(data.rows, data.cols);
                                         });
                                         client.on('disconnect', function () {

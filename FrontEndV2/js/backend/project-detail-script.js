@@ -81,7 +81,7 @@ function initProjectInstances() {
                     "columnDefs": [{
                         "targets": -1,
                         "data": null,
-                        "defaultContent": `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Modify</button>`
+                        "defaultContent": `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>`
                     },
                     {
                         "targets": -2,
@@ -99,6 +99,50 @@ function initProjectInstances() {
                 </tr>
                 `);
             }
+            $('#dataTable tbody').unbind();
+            $('#dataTable tbody').on('click', 'button', function () {
+                $("#instance-user-preload").css("display", "block");
+                var projectID = parseURLParams(window.location.href).id;
+                var instanceID = $(this).parents('tr')["0"].cells["0"].innerText;
+                if (event.target.innerHTML == "More Info") {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onloadend = function () {
+                        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                            document.getElementById("modify-instance-form").reset();
+                            $("#modify-instance-id").val(instanceID);
+                            getlistuserofproject(projectID, instanceID);
+                            $('#confirm-modify-instance').html("Update");
+                            $('#confirm-modify-instance').removeClass("btn-danger");
+                            $('#confirm-modify-instance').prop('disabled', false);
+                            var result = JSON.parse(this.responseText).body;
+                            $("#modify-instance-name").val(result.InstanceName);
+                            $("#modify-instance-ip").val(result.IPAddress);
+                            $("#modify-instance-arn").val(result.ARN);
+                            $("#modify-instance-ssh-user").val(result.InstanceUser);
+                            $('#modify-instance-panel').fadeIn(1000);
+                            $('#wrapper').addClass('blur');
+                        }
+                        else if (JSON.parse(this.responseText).statusCode == 403) {
+                            noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
+                            $('#wrapper').removeClass('blur');
+                            $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
+                            document.getElementById("modify-instance-form").reset();
+                        }
+                        else if (this.status == 401) {
+                            reAuth();
+                        }
+                        else {
+                            noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
+                        }
+                    }
+                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`, true);
+                    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                    xhttp.send();
+                }
+                else {
+                    window.location.href = (`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
+                }
+            });
         }
         else if (JSON.parse(this.responseText).statusCode == 204) {
             $('#dataTable-body').html(`
@@ -386,6 +430,8 @@ function initProjectDetail() {
             var result = JSON.parse(this.responseText).body;
             var Auth = JSON.parse(window.localStorage.getItem("Auth"));
             if (Auth.isAdmin || Auth.username == result.ProjectManager) {
+                $('#confirm-modify-instance').css('display',"block");
+                $('#delete-instance').css('display',"block");
                 $('#del-project').css('display', 'block');
                 $('#mod-project').css('display', 'block');
                 $('#modify-users-project').css('display', 'block');
@@ -540,49 +586,6 @@ function initButton(){
             xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeproject?id=" + parseURLParams(window.location.href).id, true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
-        }
-    });
-    $('#dataTable tbody').on('click', 'button', function () {
-        $("#instance-user-preload").css("display", "block");
-        var projectID = parseURLParams(window.location.href).id;
-        var instanceID = $(this).parents('tr')["0"].cells["0"].innerText;
-        if (event.target.innerHTML == "Modify") {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onloadend = function () {
-                if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
-                    document.getElementById("modify-instance-form").reset();
-                    $("#modify-instance-id").val(instanceID);
-                    getlistuserofproject(projectID, instanceID);
-                    $('#confirm-modify-instance').html("Update");
-                    $('#confirm-modify-instance').removeClass("btn-danger");
-                    $('#confirm-modify-instance').prop('disabled', false);
-                    var result = JSON.parse(this.responseText).body;
-                    $("#modify-instance-name").val(result.InstanceName);
-                    $("#modify-instance-ip").val(result.IPAddress);
-                    $("#modify-instance-arn").val(result.ARN);
-                    $("#modify-instance-ssh-user").val(result.InstanceUser);
-                    $('#modify-instance-panel').fadeIn(1000);
-                    $('#wrapper').addClass('blur');
-                }
-                else if (JSON.parse(this.responseText).statusCode == 403) {
-                    noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
-                    $('#wrapper').removeClass('blur');
-                    $('#modify-instance-panel').fadeOut(1000, () => { $('#wrapper').removeClass('blur'); });
-                    document.getElementById("modify-instance-form").reset();
-                }
-                else if (this.status == 401) {
-                    reAuth();
-                }
-                else {
-                    noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
-                }
-            }
-            xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`, true);
-            xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
-            xhttp.send();
-        }
-        else {
-            window.location.href = (`instance-log.html?projectid=${projectID}&instanceid=${instanceID}`);
         }
     });
     $("#confirm-modify-instance").on('click', function () {

@@ -216,7 +216,7 @@
                           <th>Instance Name</th>
                           <th>IP Address</th>
                           <th>SSH Log</th>
-                          <th>Modify</th>
+                          <th>More info</th>
                         </tr>
                       </thead>
                       <tbody id="dataTable-body">
@@ -322,9 +322,9 @@
 
           </div>
           <button id="delete-instance" type="button" class="btn btn-danger"
-            style="right: 184px; margin-bottom: 10px;bottom: 10px;margin-top: 10px;top: auto;position: absolute; float: right;">Delete</button>
+            style="display: none; right: 184px; margin-bottom: 10px;bottom: 10px;margin-top: 10px;top: auto;position: absolute; float: right;">Delete</button>
           <button id="confirm-modify-instance" type="button" class="btn btn-primary"
-            style="right: 100px; margin-bottom: 10px;bottom: 10px;margin-top: 10px;top: auto;position: absolute; float: right;">Update</button>
+            style="display: none; right: 100px; margin-bottom: 10px;bottom: 10px;margin-top: 10px;top: auto;position: absolute; float: right;">Update</button>
           <button type="button" class="btn btn-primary"
             style="right: 20px; margin-bottom: 10px;bottom: 10px;margin-top: 10px;top: auto;position: absolute;"
             onclick="{$('#modify-instance-panel').fadeOut(500,()=>{$('#wrapper').removeClass('blur');})}">Cancel</button>

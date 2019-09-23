@@ -1,6 +1,14 @@
 var term;
 var socket;
 var session;
+var keyCode = {
+    "\\": 28,
+    "[": 27,
+    "]": 29,
+    "^": 30,
+    "_": 31,
+}
+
 document.addEventListener("DOMContentLoaded", function(){
     var credentials = parseURLParams(window.location.href); 
     Terminal.applyAddon(fit);
@@ -39,7 +47,18 @@ document.addEventListener("DOMContentLoaded", function(){
         
         // Browser -> Backend
         term.on('data', function (data) {
-            socket.emit('data', data);
+            if(event.ctrlKey || event.altKey) {
+                event.preventDefault();
+                event.stopPropagation();
+                if(event.keyCode>=65 && event.keyCode<=91)
+                    socket.emit('data', new TextDecoder("utf-8").decode(new Uint8Array([event.keyCode - 64])));
+                else{
+                    socket.emit('data', new TextDecoder("utf-8").decode(new Uint8Array([keyCode[event.key]])));
+                }
+            }
+            else{
+                socket.emit('data', data);
+            }
         });
     
         // Backend -> Browser
