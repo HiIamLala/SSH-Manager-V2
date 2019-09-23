@@ -59,21 +59,30 @@ $(document).ready(function () {
                                 `);
                             }
                             $('.ssh').click(evt => {
-                                var project_id = evt.target.getAttribute("project-id");
-                                var instance_id = evt.target.getAttribute("instance-id");
-                                var xhttp = new XMLHttpRequest();
-                                xhttp.onloadend = function () {
-                                    if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
-                                        var token = JSON.parse(this.responseText).body;
-                                        window.open(`ssh-client.html?access=${JSON.parse(window.localStorage.getItem('Auth')).AccessToken}&token=${token}`, "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600");
-                                    }
-                                    else {
-                                        console.log(this);
-                                    }
+                                if(JSON.parse(window.localStorage.getItem("Auth")).isAdmin){
+                                    var token = `${new Date().getTime()}@${JSON.parse(window.localStorage.getItem("Auth")).username}@${evt.target.getAttribute("project-id")}@${evt.target.getAttribute("instance-id")}`
+                                    window.open(`ssh-client.html?access=${JSON.parse(window.localStorage.getItem('Auth')).AccessToken}&token=${token}`, "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600");
                                 }
-                                xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/sshconnect?projectid=${project_id}&instanceid=${instance_id}`);
-                                xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
-                                xhttp.send();
+                                else{
+                                    var project_id = evt.target.getAttribute("project-id");
+                                    var instance_id = evt.target.getAttribute("instance-id");
+                                    var xhttp = new XMLHttpRequest();
+                                    xhttp.onloadend = function () {
+                                        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                                            var token = JSON.parse(this.responseText).body;
+                                            window.open(`ssh-client.html?access=${JSON.parse(window.localStorage.getItem('Auth')).AccessToken}&token=${token}`, "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600");
+                                        }
+                                        else if(this.status == 401){
+                                            reAuth();
+                                        }
+                                        else{
+                                            noti(new Date().getTime(),"Error","Can't contact to Server. Contact administrator for more information")
+                                        }
+                                    }
+                                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/sshconnect?projectid=${project_id}&instanceid=${instance_id}`);
+                                    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                                    xhttp.send();
+                                }
                             })
                         }
                         else if (JSON.parse(this.responseText).statusCode == 204) {
@@ -153,4 +162,21 @@ function reAuth() {
     xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
+}
+
+function noti(id, header, content) {
+    $("#noti-holder").append(`<div id="${id}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="mr-auto">${header}</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            ${content}.
+        </div>
+    </div>`
+    );
+    $(`#${id}`).toast({delay:10000});
+    $(`#${id}`).toast("show");
 }

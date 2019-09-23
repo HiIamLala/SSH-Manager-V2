@@ -46,6 +46,10 @@ $(document).ready(function () {
             }
         });
     }
+    else{
+        $('#delete-user').css('display','none');
+        $('#confirm-modify-user').css('display','none');
+    }
     initeUserList();
 });
 
@@ -70,11 +74,6 @@ function initeUserList() {
                     "targets": -1,
                     "data": null,
                     "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>`
-                },
-                {
-                    "targets": -2,
-                    "data": null,
-                    "defaultContent": `<button id="project-more-info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Log</button>`
                 }]
             });
             $('#dataTable tbody').on('click', 'button', function () {

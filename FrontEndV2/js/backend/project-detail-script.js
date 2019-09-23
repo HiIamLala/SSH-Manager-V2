@@ -389,6 +389,7 @@ function initProjectDetail() {
                 $('#del-project').css('display', 'block');
                 $('#mod-project').css('display', 'block');
                 $('#modify-users-project').css('display', 'block');
+                $('#create-instance').css('display','block');
                 initButton();
             }
 
