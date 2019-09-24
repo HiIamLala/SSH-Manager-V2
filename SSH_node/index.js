@@ -68,7 +68,7 @@ var init = function(){
                                     if (err)
                                         return client.emit('data', '\r\n*** SSH SHELL ERROR: ' + err.message + ' ***\r\n');
                                     else {
-                                        result_log_stream.write('[{"time":' + new Date().getTime() + ', "value": "User connect established\n"}');
+                                        result_log_stream.write('[{"time":' + new Date().getTime() + `, "value": "User: ${username}|Project: ${project_id}|Instance: ${instance_id}|Connect established\\n"}`);
                                         client.on('data', function (data) {
                                             usercmd_log_stream.write(data);
                                             stream.write(data);
@@ -137,3 +137,4 @@ function getTime() {
     var time = today.getHours() + "-" + today.getMinutes() + "-" + today.getSeconds();
     return date + '-' + time;
 }
+
