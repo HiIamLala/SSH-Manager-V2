@@ -48,11 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
     xhttp.onloadend = function(){
         if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
             term.reset();
-            term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...\n`);
+            if(parseInt(JSON.parse(this.responseText).nextoffset) > parseInt(JSON.parse(this.responseText).size)) term.write(`Receiving log (100 %)...\n`);
+            else term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...\n`);
             log += JSON.parse(this.responseText).body;
             if(parseInt(JSON.parse(this.responseText).nextoffset)>parseInt(JSON.parse(this.responseText).size)){
                 term.reset();
-                rec = JSON.parse(log);
+                rec = initLog(JSON.parse(log));
                 render(rec,current);
             }
             else{
@@ -75,11 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp.onloadend = function(){
         if(this.status == 200 && JSON.parse(this.responseText).statusCode == 200){
             term.reset();
-            term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...`);
+            if(parseInt(JSON.parse(this.responseText).nextoffset) > parseInt(JSON.parse(this.responseText).size)) term.write(`Receiving log (100 %)...\n`);
+            else term.write(`Receiving log (${(parseInt(JSON.parse(this.responseText).nextoffset) * 100 / parseInt(JSON.parse(this.responseText).size)).toFixed(2)}%)...\n`);
             log += JSON.parse(this.responseText).body;
             if(parseInt(JSON.parse(this.responseText).nextoffset)>parseInt(JSON.parse(this.responseText).size)){
                 term.reset();
-                rec = JSON.parse(log);
+                rec = initLog(JSON.parse(log));
                 render(rec,current);
             }
             else{
@@ -98,6 +100,19 @@ document.addEventListener("DOMContentLoaded", function () {
     xhttp.send();
     }
 });
+
+function initLog(rec){
+    var res = [];
+    if(Array.isArray(rec)){
+        rec.forEach(ele=>{
+            res.push({
+                "time": Object.keys(ele)[0],
+                "value": ele[Object.keys(ele)[0]]
+            })
+        })
+    }
+    return res;
+}
 
 function render(rec,i) {
     i = Math.floor(i);

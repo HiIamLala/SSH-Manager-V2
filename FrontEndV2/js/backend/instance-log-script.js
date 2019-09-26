@@ -164,7 +164,7 @@ function initLogList(){
                 else {
                     $('#dataTable-body').html(`
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             This instance doesn't has any ssh session yet.
                         </td>
                     </tr>
@@ -174,7 +174,7 @@ function initLogList(){
             else{
                 $('#dataTable-body').html(`
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             This instance doesn't has any ssh session yet.
                         </td>
                     </tr>

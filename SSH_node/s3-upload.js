@@ -18,6 +18,7 @@ function upload(filepath){
                 console.log(time + "|" + err + "|SSH-LOG|"+ filepath);
                 error_log_stream.write(time + "|" + err + "|SSH-LOG|"+ filepath + "\n");
             }
+            else require('fs').unlinkSync(filepath);
         });
     }catch(err){
         console.log(time + "|" + err + "|SSH-LOG|"+ filepath)

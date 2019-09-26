@@ -68,7 +68,7 @@ var init = function(){
                                     if (err)
                                         return client.emit('data', '\r\n*** SSH SHELL ERROR: ' + err.message + ' ***\r\n');
                                     else {
-                                        result_log_stream.write('[{"time":' + new Date().getTime() + `, "value": "User: ${username}|Project: ${project_id}|Instance: ${instance_id}|Connect established\\n"}`);
+                                        result_log_stream.write(`[{"${new Date().getTime()}":"User: ${username}|Project: ${project_id}|Instance: ${instance_id}|Connect established\\n"}`);
                                         client.on('data', function (data) {
                                             usercmd_log_stream.write(data);
                                             stream.write(data);
@@ -93,7 +93,7 @@ var init = function(){
                                             usercmd_log_stream.close();
                                             s3.upload(file_name);
                                         }).on('data', function (data) {
-                                            result_log_stream.write("," + JSON.stringify({ time: new Date().getTime(), value: data.toString('binary') }));
+                                            result_log_stream.write(`,{"${new Date().getTime()}":${JSON.stringify(data.toString('binary'))}}`);
                                             io.to(ssh_session).emit('data', data.toString('binary'));
                                         });
                                     }
