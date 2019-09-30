@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function(){
     };
     socket = io.connect("http://35.198.208.93:12345");
     socket.on('connect', function () {
+        if(parseURLParams(window.location.href).session[0]){
+            document.getElementById('terminal').classList.remove('blur');
+            document.getElementById('session').blur();
+            document.getElementById('session-container').style.display = "none";
+            socket.emit("join_ssh_session",parseURLParams(window.location.href).session[0]);
+        }
         document.getElementById('session').addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 document.getElementById('terminal').classList.remove('blur');
@@ -27,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function(){
         });
         term.write('\r\n*** Connected to backend***\r\n');
         term.fit();
-        socket.emit('setsize',{rows:term.rows,cols:term.cols});
         socket.on('session',function(data){
             session = data;
             console.log(`This session id: ${data}`);

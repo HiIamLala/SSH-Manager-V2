@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             document.getElementById('session').value = data;
             document.getElementById('session').setAttribute('session',data);
             document.getElementById('session-container').addEventListener('click',function(event){
-                document.getElementById('session').value = document.getElementById('session').getAttribute('session');
+                document.getElementById('session').value = "https://storage.googleapis.com/ssh-management/ssh-join.html?session=" + document.getElementById('session').getAttribute('session');
                 document.getElementById('session').disabled=false;
                 document.getElementById('session').select();
                 document.execCommand('copy');
