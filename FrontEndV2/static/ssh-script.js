@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function(){
         term.fit();
         socket.emit('setsize',{rows:term.rows,cols:term.cols});
         socket.on('session',function(data){
+            socket.emit('setsize',{rows:term.rows,cols:term.cols});
             session = data;
             document.getElementById('session').value = data;
             document.getElementById('session').setAttribute('session',data);

@@ -111,6 +111,14 @@ function initLog(rec){
             })
         })
     }
+    else{
+        Object.keys(rec).forEach(time=>{
+            res.push({
+                "time": time,
+                "value": rec[time]
+            })
+        })
+    }
     return res;
 }
 
