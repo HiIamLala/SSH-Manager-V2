@@ -1,0 +1,167 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Resources:
+  SSHMJS:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs10.x
+      CodeUri: .
+      Description: ''
+      MemorySize: 512
+      Timeout: 900
+      Role: 'arn:aws:iam::994908476796:role/service-role/SSHM_JS-role-tullal5r'
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /listprojects
+            Method: GET
+        Api2:
+          Type: Api
+          Properties:
+            Path: /updateprojectusers
+            Method: POST
+        Api3:
+          Type: Api
+          Properties:
+            Path: /reauth
+            Method: POST
+        Api4:
+          Type: Api
+          Properties:
+            Path: /removeinstance
+            Method: GET
+        Api5:
+          Type: Api
+          Properties:
+            Path: /getlogdata
+            Method: GET
+        Api6:
+          Type: Api
+          Properties:
+            Path: /getuserdetail
+            Method: GET
+        Api7:
+          Type: Api
+          Properties:
+            Path: /projectdetail
+            Method: GET
+        Api8:
+          Type: Api
+          Properties:
+            Path: /listprojectinstances
+            Method: GET
+        Api9:
+          Type: Api
+          Properties:
+            Path: /googlelogin
+            Method: GET
+        Api10:
+          Type: Api
+          Properties:
+            Path: /listallinstances
+            Method: GET
+        Api11:
+          Type: Api
+          Properties:
+            Path: /updateinstancedetail
+            Method: POST
+        Api12:
+          Type: Api
+          Properties:
+            Path: /listprojectusers
+            Method: GET
+        Api13:
+          Type: Api
+          Properties:
+            Path: /MyResource
+            Method: ANY
+        Api14:
+          Type: Api
+          Properties:
+            Path: /listalllog
+            Method: GET
+        Api15:
+          Type: Api
+          Properties:
+            Path: /listinstanceusers
+            Method: GET
+        Api16:
+          Type: Api
+          Properties:
+            Path: /listinstancelog
+            Method: GET
+        Api17:
+          Type: Api
+          Properties:
+            Path: /createproject
+            Method: POST
+        Api18:
+          Type: Api
+          Properties:
+            Path: /listalluser
+            Method: GET
+        Api19:
+          Type: Api
+          Properties:
+            Path: /sshconnect
+            Method: GET
+        Api20:
+          Type: Api
+          Properties:
+            Path: /changepassword
+            Method: POST
+        Api21:
+          Type: Api
+          Properties:
+            Path: /register
+            Method: POST
+        Api22:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+        Api23:
+          Type: Api
+          Properties:
+            Path: /removeuser
+            Method: GET
+        Api24:
+          Type: Api
+          Properties:
+            Path: /removeproject
+            Method: GET
+        Api25:
+          Type: Api
+          Properties:
+            Path: /getinstancedetail
+            Method: GET
+        Api26:
+          Type: Api
+          Properties:
+            Path: /updateinstanceusers
+            Method: POST
+        Api27:
+          Type: Api
+          Properties:
+            Path: /getalluserdetail
+            Method: GET
+        Api28:
+          Type: Api
+          Properties:
+            Path: /updateuserdetail
+            Method: POST
+        Api29:
+          Type: Api
+          Properties:
+            Path: /challengerep
+            Method: POST
+      Environment:
+        Variables:
+          clientID: 5kuhej69qg1vnn2gkqlmdv878s
+          clientSecret: 1ougij54vc3atqinm7ietigqijvc2h9v9955137hg9sivih2dp8j
+          dbname: SSHM_Projects
+          sshLogBucket: ssh-manager-log
+          userPoolID: ap-southeast-1_1nyDJZauN
