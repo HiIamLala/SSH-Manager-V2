@@ -1,6 +1,11 @@
 <html>
 
 <head>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
     <script src="static/socket.io.js"></script>
@@ -22,7 +27,8 @@
     <div id="terminal" class="blur" style="margin:0px;top:0px;left:0px;height:100vh;width:100vw;overflow-y:hidden"></div>
     <div id="session-container"
         style="text-align: center;background:floralwhite; z-index: 1000000; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%)">
-        <label style="font-family: Quicksand; font-size: 100px" for="session">Session id:</label><br><input style="font-family: Quicksand;font-size: 100px" id="session" type="text"></div>
-</body>
-
+        <label style="font-family: Quicksand; font-size: 100px" for="session">Session id:</label><br><input style="font-family: Quicksand;font-size: 100px" id="session" type="text">
+    </div>
+    <img src="img/copied.png" width="40px" id="copied" style="display:none; position:absolute; z-index: 9999; left: 50%; top:50%; transform: translate(-50%,-50%);">
+    </body>
 </html>

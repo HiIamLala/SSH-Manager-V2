@@ -1,6 +1,11 @@
 <html>
 
 <head>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
     <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
     <script src="static/socket.io.js"></script>
     <script src="node_modules/xterm/dist/addons/fit/fit.js"></script>
@@ -14,6 +19,7 @@
         <input type="range" min="1" max="80" value="10" class="slider" id="speed">
         <input type="range" min="0" max="100" value="0" class="slider" id="play">
     </div>
+    <img src="img/copied.png" width="40px" id="copied" style="display:none; position:absolute; z-index: 9999; left: 50%; top:50%; transform: translate(-50%,-50%);">
 </body>
 
 </html>

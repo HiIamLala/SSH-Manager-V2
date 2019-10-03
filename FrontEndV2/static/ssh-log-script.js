@@ -10,6 +10,15 @@ window.onkeypress = (event) => {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    //copy from screen
+    document.getElementById('terminal').onmouseup = function(data){
+        if(term.hasSelection()){
+            copyStringToClipboard(term.getSelection());
+            $('#copied').fadeIn(100, ()=>{
+                setTimeout(()=>{$('#copied').fadeOut(100)},1000);
+            });
+        }
+    };
     playbar = document.getElementById('play');
     document.getElementById("speed").oninput = function(){
         clearTimeout(play);
@@ -102,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function initLog(rec){
+    term.reset();
     var res = [];
     if(Array.isArray(rec)){
         rec.forEach(ele=>{
@@ -125,6 +135,7 @@ function initLog(rec){
 function render(rec,i) {
     i = Math.floor(i);
     if(i==0){
+        term.reset();
         term.write(rec[i].value);
         i++;
         playbar.value = i*100/rec.length;
@@ -160,3 +171,14 @@ function parseURLParams(url) {
     }
     return parms;
 }
+
+function copyStringToClipboard (str) {
+    var el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+ }
