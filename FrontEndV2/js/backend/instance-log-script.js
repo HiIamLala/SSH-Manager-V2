@@ -8,6 +8,18 @@ $(document).ready(function () {
     initProjectDetail();
     initInstanceDetail();
     initLogList();
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var min = new Date($('#min').val());
+            var max = new Date($('#max').val());
+            var startDate = new Date(parseInt(data[0].split(' ')[0].split('/')[2]),parseInt(data[0].split(' ')[0].split('/')[1])-1,parseInt(data[0].split(' ')[0].split('/')[0]),parseInt(data[0].split(' ')[1].split(':')[0]),parseInt(data[0].split(' ')[1].split(':')[1]),parseInt(data[0].split(' ')[1].split(':')[2]));
+            if (min == "Invalid Date" && max == "Invalid Date") return true;
+            if (min == "Invalid Date" && startDate <= max) return true;
+            if (max == "Invalid Date" && startDate >= min) return true;
+            if (startDate <= max && startDate >= min) return true;
+            return false;
+        }
+    );
 });
 
 function reAuth(){

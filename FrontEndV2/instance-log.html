@@ -200,7 +200,19 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Log's List</h6>
+                            <p class="m-0 font-weight-bold text-primary" style="padding-left: 10px;line-height:2em; font-size: 2em; position: absolute;width: 30%">Log's List</p>
+                            <div style="float: right; width: 50%">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <span id="date-label-from" class="date-label">From: </span><input
+                                                class="date_range_filter date .datepicker form-control" type="date" id="min" onchange="table.draw()"/>
+                                            </div>
+                                            <div class="col-lg-6">
+                                            <span id="date-label-to" class="date-label">To: </span><input
+                                                class="date_range_filter date .datepicker form-control" type="date" id="max" onchange="table.draw()"/>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive" style="overflow-x: hidden">
@@ -274,7 +286,10 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+        integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
