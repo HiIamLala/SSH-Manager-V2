@@ -1,4 +1,9 @@
 var table;
+Date.prototype.toManualString = function(){
+    let d = this;
+    return (d.getDate()<10?"0"+d.getDate():d.getDate())  + "/" + ((d.getMonth()+1)<10?"0"+(d.getMonth()+1):(d.getMonth()+1)) + "/" + d.getFullYear() + " " +
+    (d.getHours()<10?"0"+d.getHours():d.getHours()) + ":" + (d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes()) + ":" + (d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds());
+}
 $(document).ready(function () {
     initProjectDetail();
     initInstanceDetail();
@@ -145,7 +150,7 @@ function initLogList(){
                             else {
                                 size += " Byte";
                             }
-                            log_list.push([log, user, result[user][log].name, size]);
+                            log_list.push([new Date(log).toManualString(), user, result[user][log].name, size]);
                         })
                     });
                     if ($.fn.dataTable.isDataTable('#dataTable')) {
@@ -154,11 +159,18 @@ function initLogList(){
                     table = $('#dataTable').DataTable({
                         data: log_list,
                         "columnDefs": [
-                        {
-                            "targets": -1,
-                            "data": null,
-                            "defaultContent": `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Log</button>`
-                        }]
+                            {
+                                "targets": -1,
+                                "data": null,
+                                "defaultContent": `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Log</button>`
+                            },
+                            {
+                                type: 'date-euro', targets: 0 
+                            },
+                            {
+                                type: 'file-size', targets: 3
+                            }
+                        ],
                     });
                 }
                 else {
@@ -219,4 +231,19 @@ function noti(id, header, content) {
     );
     $(`#${id}`).toast({delay:10000});
     $(`#${id}`).toast("show");
+}
+
+function millis2HumanReadable(check){
+    let now = new Date();
+    let diff = now.getTime() - check.getTime();
+    if(diff<2000)
+        return "Recently"
+    else if(diff<60000)
+        return parseInt(diff/1000) + " seconds ago";
+    else if(diff<3600000)
+        return parseInt(diff/60000) + " minutes ago";
+    else if(diff<86400000)
+        return parseInt(diff/3600000) + " hours ago";
+    else
+        return parseInt(diff/86400000) + " days ago";
 }
