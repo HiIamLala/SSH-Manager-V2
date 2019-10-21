@@ -216,4 +216,6 @@ function getTime() {
 
 module.exports = {
     ssh,
+    authAccessToken,
+    getInstanceDetail
 };
