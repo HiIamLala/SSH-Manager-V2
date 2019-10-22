@@ -1,4 +1,5 @@
 var table;
+var bastion_list = [];
 $(document).ready(function () {
     try {
         var Auth = JSON.parse(window.localStorage.getItem("Auth"));
@@ -66,13 +67,22 @@ function initProjectInstances() {
     xhttp.onloadend = function () {
         $('#instance-preload').css("display", "none");
         if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+            $("#create-instance-bastion").html(`<option value="">This is a bastion instance</option>`);
             $("#dataTable-body").html("");
             var result = JSON.parse(this.responseText).body;
             var instance_list = [];
+            bastion_list = [];
             if (Object.keys(result).length > 0) {
                 Object.keys(result).forEach(instance => {
+                    if(!result[instance].InstanceProps.Bastion){
+                        var temp = result[instance];
+                        temp.ID = instance;
+                        bastion_list.push(temp);
+                        $("#create-instance-bastion").append(`<option data-tokens="${temp.ID}|${temp.InstanceProps.InstanceName}|${temp.InstanceProps.IPAddress}">${temp.ID}|&emsp;${temp.InstanceProps.InstanceName}&emsp;|&emsp;IP: ${temp.InstanceProps.IPAddress}</option>`);
+                    }
                     instance_list.push([instance, result[instance].InstanceProps.InstanceName, result[instance].InstanceProps.IPAddress]);
                 });
+                $('#create-instance-bastion').selectpicker('refresh');
                 if ($.fn.dataTable.isDataTable('#dataTable')) {
                     table.destroy();
                 }
@@ -109,11 +119,6 @@ function initProjectInstances() {
                     xhttp.onloadend = function () {
                         if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
                             document.getElementById("modify-instance-form").reset();
-                            $("#modify-instance-id").val(instanceID);
-                            getlistuserofproject(projectID, instanceID);
-                            $('#confirm-modify-instance').html("Update");
-                            $('#confirm-modify-instance').removeClass("btn-danger");
-                            $('#confirm-modify-instance').prop('disabled', false);
                             var result = JSON.parse(this.responseText).body;
                             $("#modify-instance-name").val(result.InstanceName);
                             $("#modify-instance-ip").val(result.IPAddress);
@@ -121,6 +126,16 @@ function initProjectInstances() {
                             $("#modify-instance-ssh-user").val(result.InstanceUser);
                             $('#modify-instance-panel').fadeIn(1000);
                             $('#wrapper').addClass('blur');
+                            $("#modify-instance-id").val(instanceID);
+                            getlistuserofproject(projectID, instanceID);
+                            $('#confirm-modify-instance').html("Update");
+                            $('#confirm-modify-instance').removeClass("btn-danger");
+                            $('#confirm-modify-instance').prop('disabled', false);
+                            $("#modify-instance-bastion").html(`<option value="">This is a bastion instance</option>`);
+                            bastion_list.forEach(ele=>{
+                                $("#modify-instance-bastion").append(`<option data-tokens="${ele.ID}|${ele.InstanceProps.InstanceName}|${ele.InstanceProps.IPAddress}">${ele.ID}|&emsp;${ele.InstanceProps.InstanceName}&emsp;|&emsp;IP: ${ele.InstanceProps.IPAddress}</option>`);
+                            });
+                            $('#modify-instance-bastion').selectpicker('refresh');
                         }
                         else if (JSON.parse(this.responseText).statusCode == 403) {
                             noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
@@ -371,7 +386,8 @@ function modifyInstanceProps() {
             "IPAddress": $("#modify-instance-ip").val(),
             "InstanceName": $("#modify-instance-name").val(),
             "ARN": $("#modify-instance-arn").val(),
-            "InstanceUser": $("#modify-instance-ssh-user").val()
+            "InstanceUser": $("#modify-instance-ssh-user").val(),
+            "Bastion": parseInt($('#modify-instance-bastion').val().split('|')[0])||false,
         },
         "instanceID": $("#modify-instance-id").val(),
         "projectID": parseURLParams(window.location.href).id
@@ -487,7 +503,8 @@ function initButton(){
                     "instance_arn": $("#create-instance-arn").val(),
                     "instance_ip": $("#create-instance-ip").val(),
                     "instance_ssh": key,
-                    "instance_user": $('#create-instance-ssh-user').val()
+                    "instance_user": $('#create-instance-ssh-user').val(),
+                    "bastion": parseInt($('#create-instance-bastion').val().split('|')[0])||false,
                 });
                 xhttp.onloadend = function () {
                     if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {

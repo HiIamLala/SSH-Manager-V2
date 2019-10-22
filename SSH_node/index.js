@@ -70,8 +70,8 @@ var init = function(){
                             var file_name = "./log/" + project_id + "/" + instance_id + "/" + username + "/" + dateTime + "_output.rec";
                             var result_log_stream = require('fs').createWriteStream(file_name, { flags: 'a' });
                             var usercmd_log_stream = require('fs').createWriteStream("./log/" + project_id + "/" + instance_id + "/" + dateTime + "-usercmd.txt", { flags: 'a' });
-                            if(result.InstanceProps.Bastion){
-                                var bastionID = result.InstanceProps.Bastion;
+                            if(result.InstanceProps.Bastion && parseInt(result.InstanceProps.Bastion)){
+                                var bastionID = parseInt(result.InstanceProps.Bastion);
                                 query.getInstanceDetail(project_id,bastionID,(bastionErr,bastionResult)=>{
                                     if(bastionErr){
                                         client.emit('data',bastionErr);
