@@ -133,9 +133,13 @@ function initProjectInstances() {
                             $('#confirm-modify-instance').prop('disabled', false);
                             $("#modify-instance-bastion").html(`<option value="">This is a bastion instance</option>`);
                             bastion_list.forEach(ele=>{
-                                $("#modify-instance-bastion").append(`<option data-tokens="${ele.ID}|${ele.InstanceProps.InstanceName}|${ele.InstanceProps.IPAddress}">${ele.ID}|&emsp;${ele.InstanceProps.InstanceName}&emsp;|&emsp;IP: ${ele.InstanceProps.IPAddress}</option>`);
+                                $("#modify-instance-bastion").append(`<option value="${ele.ID}" data-tokens="${ele.ID}|${ele.InstanceProps.InstanceName}|${ele.InstanceProps.IPAddress}">${ele.ID}|&emsp;${ele.InstanceProps.InstanceName}&emsp;|&emsp;IP: ${ele.InstanceProps.IPAddress}</option>`);
                             });
                             $('#modify-instance-bastion').selectpicker('refresh');
+                            bastion_list.forEach(ele=>{
+                                if(ele.ID == String(result.Bastion))
+                                    $('#modify-instance-bastion').selectpicker('val',`${ele.ID}`);
+                            });
                         }
                         else if (JSON.parse(this.responseText).statusCode == 403) {
                             noti(new Date().getTime(), `<font color="red">Forbidden</font>`, "You don't have permission on this instance");
