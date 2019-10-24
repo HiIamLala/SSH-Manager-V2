@@ -137,7 +137,7 @@ function initProjectInstances() {
                             });
                             $('#modify-instance-bastion').selectpicker('refresh');
                             bastion_list.forEach(ele=>{
-                                if(ele.ID == String(result.Bastion))
+                                if(ele.ID == String(result.Bastion) && ele.ID != instanceID)
                                     $('#modify-instance-bastion').selectpicker('val',`${ele.ID}`);
                             });
                         }
@@ -495,9 +495,84 @@ function initButton(){
         });
     });
     $('#confirm-create-instance').click(function () {
-        var reader = new FileReader();
+        try{
+            var reader = new FileReader();
         reader.onload = function (e) {
-            var key = reader.result;
+            if(e){
+                if ($("#create-instance-name").val() && $("#create-instance-ip").val() && $("#create-instance-arn").val() && $('#create-instance-ssh-user').val()) {
+                    $('#confirm-create-instance').attr("disabled", "true");
+                    var xhttp = new XMLHttpRequest();
+                    var data = JSON.stringify({
+                        "ID": parseInt(parseURLParams(window.location.href).id),
+                        "instance_name": $("#create-instance-name").val(),
+                        "instance_arn": $("#create-instance-arn").val(),
+                        "instance_ip": $("#create-instance-ip").val(),
+                        "instance_user": $('#create-instance-ssh-user').val(),
+                        "instance_pass": $('#create-instance-ssh-pass').val(),
+                        "bastion": parseInt($('#create-instance-bastion').val().split('|')[0])||false,
+                    });
+                    xhttp.onloadend = function () {
+                        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                            noti(new Date().getTime(), "Success", "Create instance success<br>Instance ID: " + JSON.parse(this.responseText).body);
+                            $('#wrapper').removeClass('blur');
+                            $('#create-instance-panel').css('display', 'none');
+                            initProjectInstances();
+                        }
+                        else {
+                            $('#confirm-create-instance').html("Fail");
+                            $('#confirm-create-instance').addClass("btn-danger");
+                            $('#confirm-create-instance').attr("disabled", "true");
+                        }
+                    };
+                    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createinstance", true);
+                    xhttp.setRequestHeader("Content-Type", "application/json");
+                    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                    xhttp.send(data);
+                }
+                else {
+                    window.alert("You have to fill all the field");
+                }
+            }
+            else{
+                var key = reader.result;
+                if ($("#create-instance-name").val() && $("#create-instance-ip").val() && $("#create-instance-arn").val() && $('#create-instance-ssh-user').val()) {
+                    $('#confirm-create-instance').attr("disabled", "true");
+                    var xhttp = new XMLHttpRequest();
+                    var data = JSON.stringify({
+                        "ID": parseInt(parseURLParams(window.location.href).id),
+                        "instance_name": $("#create-instance-name").val(),
+                        "instance_arn": $("#create-instance-arn").val(),
+                        "instance_ip": $("#create-instance-ip").val(),
+                        "instance_ssh": key,
+                        "instance_user": $('#create-instance-ssh-user').val(),
+                        "instance_pass": $('#create-instance-ssh-pass').val(),
+                        "bastion": parseInt($('#create-instance-bastion').val().split('|')[0])||false,
+                    });
+                    xhttp.onloadend = function () {
+                        if (this.status == 200 && JSON.parse(this.responseText).statusCode == 200) {
+                            noti(new Date().getTime(), "Success", "Create instance success<br>Instance ID: " + JSON.parse(this.responseText).body);
+                            $('#wrapper').removeClass('blur');
+                            $('#create-instance-panel').css('display', 'none');
+                            initProjectInstances();
+                        }
+                        else {
+                            $('#confirm-create-instance').html("Fail");
+                            $('#confirm-create-instance').addClass("btn-danger");
+                            $('#confirm-create-instance').attr("disabled", "true");
+                        }
+                    };
+                    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createinstance", true);
+                    xhttp.setRequestHeader("Content-Type", "application/json");
+                    xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
+                    xhttp.send(data);
+                }
+                else {
+                    window.alert("You have to fill all the field");
+                }
+            } 
+        }
+        reader.readAsText($('#create-instance-ssh-key')[0].files[0]);
+        } catch(err){
             if ($("#create-instance-name").val() && $("#create-instance-ip").val() && $("#create-instance-arn").val() && $('#create-instance-ssh-user').val()) {
                 $('#confirm-create-instance').attr("disabled", "true");
                 var xhttp = new XMLHttpRequest();
@@ -506,8 +581,8 @@ function initButton(){
                     "instance_name": $("#create-instance-name").val(),
                     "instance_arn": $("#create-instance-arn").val(),
                     "instance_ip": $("#create-instance-ip").val(),
-                    "instance_ssh": key,
                     "instance_user": $('#create-instance-ssh-user').val(),
+                    "instance_pass": $('#create-instance-ssh-pass').val(),
                     "bastion": parseInt($('#create-instance-bastion').val().split('|')[0])||false,
                 });
                 xhttp.onloadend = function () {
@@ -527,11 +602,11 @@ function initButton(){
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send(data);
-            } else {
+            }
+            else {
                 window.alert("You have to fill all the field");
             }
         }
-        reader.readAsText($('#create-instance-ssh-key')[0].files[0]);
     });
     $("#mod-project").on('click', function () {
         var xhttp = new XMLHttpRequest();

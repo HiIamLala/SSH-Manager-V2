@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function(){
         term.fit();
         socket.emit('setsize',{rows:term.rows,cols:term.cols});
     };
-    socket = io.connect("http://35.198.208.93:12345");
+    socket = io.connect("http://3.0.94.16:12345");
     socket.emit("setup_new_connection",JSON.stringify(credentials));
     socket.on('connect', function () {
         term.write('\r\n*** Connected to backend***\r\n');
