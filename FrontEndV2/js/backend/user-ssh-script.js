@@ -12,15 +12,21 @@ $(document).ready(function () {
                 result.forEach(element => {
                     $("#project-list").append(`
                     <nav style="border-radius: 5px;" id="project-${element.ID}" project-id="${element.ID}" class="load-instances project-item navbar navbar-expand navbar-light bg-light mb-4">
-                    <div project-id="${element.ID}" class="font-weight-bolder" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">${element.ProjectProps.ProjectName}</div>
-                        <ul project-id="${element.ID}">
-                            <li project-id="${element.ID}">
-                                <div project-id="${element.ID}" class="small mb-1">Company name: ${element.ProjectProps.CompanyName}</div>
-                            </li>
-                            <li project-id="${element.ID}">
-                                <div project-id="${element.ID}" class="small mb-1">Project manager: ${element.ProjectProps.ProjectManager}</div>
-                            </li>
-                        </ul>
+                        <div class="row" style="width:100%" project-id="${element.ID}">
+                            <div class="col-lg-6" project-id="${element.ID}">
+                                <div project-id="${element.ID}" class="font-weight-bolder" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">${element.ProjectProps.ProjectName}</div>
+                            </div>
+                            <div class="col-lg-6" project-id="${element.ID}">    
+                                <ul project-id="${element.ID}">
+                                    <li project-id="${element.ID}">
+                                        <div project-id="${element.ID}" class="small mb-1">Company name: ${element.ProjectProps.CompanyName}</div>
+                                    </li>
+                                    <li project-id="${element.ID}">
+                                        <div project-id="${element.ID}" class="small mb-1">Project manager: ${element.ProjectProps.ProjectManager}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </nav>
                     `);
                     list_project.push(document.getElementById(`project-${element.ID}`));

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function(){
         term.fit();
         socket.emit('setsize',{rows:term.rows,cols:term.cols});
     };
-    socket = io.connect("http://35.198.208.93:12345");
+    socket = io.connect("http://3.0.94.16:12345");
     socket.on('connect', function () {
         if(parseURLParams(window.location.href).session[0]){
             document.getElementById('terminal').classList.remove('blur');
