@@ -1,6 +1,7 @@
 var term;
 var socket;
 var session;
+const SSHNodeEndpoint = "http://3.0.94.16:12345";
 document.addEventListener("DOMContentLoaded", function(){
     Terminal.applyAddon(fit);
     var terminalContainer = document.getElementById('terminal');
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(){
         term.fit();
         socket.emit('setsize',{rows:term.rows,cols:term.cols});
     };
-    socket = io.connect("http://3.0.94.16:12345");
+    socket = io.connect(SSHNodeEndpoint);
     socket.on('connect', function () {
         if(parseURLParams(window.location.href).session[0]){
             document.getElementById('terminal').classList.remove('blur');

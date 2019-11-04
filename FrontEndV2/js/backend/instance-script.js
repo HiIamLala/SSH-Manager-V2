@@ -1,4 +1,3 @@
-// Call the dataTables jQuery plugin
 $(document).ready(function () {
     try {
         if(JSON.parse(window.localStorage.getItem("Auth")).isAdmin){
@@ -60,7 +59,7 @@ $(document).ready(function () {
                                     noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
                                 }
                             }
-                            xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
+                            xhttp.open("GET",BackEndPoint+`/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
                             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                             xhttp.send();
                         }
@@ -73,7 +72,7 @@ $(document).ready(function () {
                     noti(new Date().getTime(),`<font color="red">Forbidden</font>`,"You don't have permission on any instance");
                 }
             };
-            xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listallinstances", true);
+            xhttp.open("GET", BackEndPoint+"/listallinstances", true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
             $("#confirm-modify-instance").on('click',function(){
@@ -101,7 +100,7 @@ $(document).ready(function () {
                         noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
                     }
                 }
-                xhttp.open('POST','https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers',true);
+                xhttp.open('POST',BackEndPoint+'/updateinstanceusers',true);
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send(data);
@@ -144,7 +143,7 @@ function getlistuserofproject(projectID){
             reAuth();
         }
     };
-    xhttp.open('GET', "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=" + projectID, true);
+    xhttp.open('GET', BackEndPoint+"/listprojectusers?id=" + projectID, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -168,7 +167,7 @@ function getlistuserofinstance(projectID, instance_id){
             reAuth();
         }
     };
-    xhttp.open("GET",  `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listinstanceusers?projectid=${projectID}&instanceid=${instance_id}`, true);
+    xhttp.open("GET",  BackEndPoint+`/listinstanceusers?projectid=${projectID}&instanceid=${instance_id}`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -198,7 +197,7 @@ function reAuth() {
             window.location.href = ('login.html');
         }
     };
-    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+    xhttp.open("POST", BackEndPoint+"/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
 }

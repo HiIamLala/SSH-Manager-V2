@@ -36,7 +36,7 @@ function reAuth() {
             window.location.href = ('login.html');
         }
     };
-    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+    xhttp.open("POST", BackEndPoint+"/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
 }
@@ -154,7 +154,7 @@ function initProjectInstances() {
                             noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
                         }
                     }
-                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`, true);
+                    xhttp.open("GET", BackEndPoint+`/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`, true);
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.send();
                 }
@@ -179,7 +179,7 @@ function initProjectInstances() {
             console.log(this);
         }
     };
-    xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectinstances?id=" + parseURLParams(window.location.href).id, true);
+    xhttp.open("GET", BackEndPoint+"/listprojectinstances?id=" + parseURLParams(window.location.href).id, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -218,7 +218,7 @@ function initProjectDevelopers() {
             reAuth();
         }
     };
-    xhttp.open('GET', "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=" + parseURLParams(window.location.href).id, true);
+    xhttp.open('GET', BackEndPoint+"/listprojectusers?id=" + parseURLParams(window.location.href).id, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -304,7 +304,7 @@ function getAllUser() {
                                 reAuth();
                             }
                         }
-                        xhttp.open("POST", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateprojectusers`, true);
+                        xhttp.open("POST", BackEndPoint+`/updateprojectusers`, true);
                         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                         xhttp.setRequestHeader("Content-Type", "application/json");
                         xhttp.send(data);
@@ -314,7 +314,7 @@ function getAllUser() {
                     reAuth();
                 }
             };
-            xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=${parseURLParams(window.location.href).id}`, true);
+            xhttp.open("GET", BackEndPoint+`/listprojectusers?id=${parseURLParams(window.location.href).id}`, true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
         }
@@ -322,7 +322,7 @@ function getAllUser() {
             reAuth();
         }
     };
-    xhttp.open('GET', "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listalluser", true);
+    xhttp.open('GET', BackEndPoint+"/listalluser", true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -354,7 +354,7 @@ function getlistuserofproject(projectID, instanceID) {
             reAuth();
         }
     };
-    xhttp.open('GET', "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectusers?id=" + projectID, true);
+    xhttp.open('GET', BackEndPoint+"/listprojectusers?id=" + projectID, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -378,7 +378,7 @@ function getlistuserofinstance(instance_id) {
             reAuth();
         }
     };
-    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listinstanceusers?projectid=${parseURLParams(window.location.href).id}&instanceid=${instance_id}`, true);
+    xhttp.open("GET", BackEndPoint+`/listinstanceusers?projectid=${parseURLParams(window.location.href).id}&instanceid=${instance_id}`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -415,7 +415,7 @@ function modifyInstanceProps() {
             noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
         }
     }
-    xhttp.open("POST", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstancedetail`, true);
+    xhttp.open("POST", BackEndPoint+`/updateinstancedetail`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
@@ -438,7 +438,7 @@ function getlistuser(user) {
             reAuth();
         }
     };
-    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listalluser`, true);
+    xhttp.open("GET", BackEndPoint+`/listalluser`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -477,7 +477,7 @@ function initProjectDetail() {
             reAuth();
         }
     };
-    xhttp.open('GET', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/projectdetail?id=' + parseURLParams(window.location.href).id, true);
+    xhttp.open('GET', BackEndPoint+'/projectdetail?id=' + parseURLParams(window.location.href).id, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -524,7 +524,7 @@ function initButton(){
                             $('#confirm-create-instance').attr("disabled", "true");
                         }
                     };
-                    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createinstance", true);
+                    xhttp.open("POST", BackEndPoint+"/createinstance", true);
                     xhttp.setRequestHeader("Content-Type", "application/json");
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.send(data);
@@ -561,7 +561,7 @@ function initButton(){
                             $('#confirm-create-instance').attr("disabled", "true");
                         }
                     };
-                    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createinstance", true);
+                    xhttp.open("POST", BackEndPoint+"/createinstance", true);
                     xhttp.setRequestHeader("Content-Type", "application/json");
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.send(data);
@@ -598,7 +598,7 @@ function initButton(){
                         $('#confirm-create-instance').attr("disabled", "true");
                     }
                 };
-                xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createinstance", true);
+                xhttp.open("POST", BackEndPoint+"/createinstance", true);
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send(data);
@@ -654,7 +654,7 @@ function initButton(){
                             noti(new Date().getTime(), `<font color="red">Fail</font>`, this.responseText);
                         }
                     }
-                    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/update-project-detail", true);
+                    xhttp.open("POST", BackEndPoint+"/update-project-detail", true);
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.setRequestHeader("Content-Type", "application/json");
                     xhttp.send(data);
@@ -664,7 +664,7 @@ function initButton(){
                 reAuth();
             }
         };
-        xhttp.open('GET', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/projectdetail?id=' + parseURLParams(window.location.href).id, true);
+        xhttp.open('GET', BackEndPoint+'/projectdetail?id=' + parseURLParams(window.location.href).id, true);
         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
         xhttp.send();
     });
@@ -679,7 +679,7 @@ function initButton(){
                     noti(new Date().getTime(), `<font color="red">Fail</font>`, `Delete project ${parseURLParams(window.location.href).id} fail <br> ${JSON.parse(this.responseText).body}`);
                 }
             }
-            xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeproject?id=" + parseURLParams(window.location.href).id, true);
+            xhttp.open("GET", BackEndPoint+"/removeproject?id=" + parseURLParams(window.location.href).id, true);
             xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
             xhttp.send();
         }
@@ -709,7 +709,7 @@ function initButton(){
                 noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
             }
         }
-        xhttp.open('POST', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateinstanceusers', true);
+        xhttp.open('POST', BackEndPoint+'/updateinstanceusers', true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
         xhttp.send(data);
@@ -740,7 +740,7 @@ function initButton(){
                 noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
             }
         }
-        xhttp.open('GET', `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeinstance?projectid=${parseURLParams(window.location.href).id}&instanceid=${$("#modify-instance-id").val()}`, true);
+        xhttp.open('GET', BackEndPoint+`/removeinstance?projectid=${parseURLParams(window.location.href).id}&instanceid=${$("#modify-instance-id").val()}`, true);
         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
         xhttp.send();
     });

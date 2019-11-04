@@ -4,6 +4,7 @@ var speed = 1;
 var play;
 var playbar;
 var current = 0;
+const BackEndPoint = "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta";
 
 window.onkeypress = (event) => {
     event.preventDefault();
@@ -76,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(this);
         }
     }
-    xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=0`,true);
+    xhttp.open("GET",BackEndPoint+`/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=0`,true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(this);
         }
     }
-    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=${offset}`, true);
+    xhttp.open("GET", BackEndPoint+`/getlogdata?projectid=${projectID}&instanceid=${instanceID}&username=${username}&logname=${logname}&offset=${offset}`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
     }

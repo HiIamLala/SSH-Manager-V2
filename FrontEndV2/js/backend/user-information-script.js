@@ -25,7 +25,7 @@ $(document).ready(function () {
                         console.log(this);
                     }
                 }
-                xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/changepassword", true);
+                xhttp.open("POST", BackEndPoint+"/changepassword", true);
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send(data);

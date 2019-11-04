@@ -1,4 +1,3 @@
-// Call the dataTables jQuery plugin
 var table;
 $(document).ready(function () {
   try {
@@ -39,7 +38,7 @@ $(document).ready(function () {
             $('#confirm-create-project').attr("disabled", "true");
           }
         };
-        xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/createproject", true);
+        xhttp.open("POST", BackEndPoint+"/createproject", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
         xhttp.send(data);
@@ -74,7 +73,7 @@ function getlistuser() {
       console.log(this);
     }
   };
-  xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listalluser`, true);
+  xhttp.open("GET", BackEndPoint+`/listalluser`, true);
   xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
   xhttp.send();
 }
@@ -112,7 +111,7 @@ function initProjectList() {
       reAuth();
     }
   };
-  xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojects", true);
+  xhttp.open("GET", BackEndPoint+"/listprojects", true);
   xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
   xhttp.send();
 }
@@ -142,7 +141,7 @@ function reAuth() {
       window.location.href = ('login.html');
     }
   };
-  xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+  xhttp.open("POST", BackEndPoint+"/reauth", true);
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(data);
 }

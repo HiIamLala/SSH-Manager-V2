@@ -85,7 +85,7 @@ $(document).ready(function () {
                                             noti(new Date().getTime(),"Error","Can't contact to Server. Contact administrator for more information")
                                         }
                                     }
-                                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/sshconnect?projectid=${project_id}&instanceid=${instance_id}`);
+                                    xhttp.open("GET", BackEndPoint+`/sshconnect?projectid=${project_id}&instanceid=${instance_id}`);
                                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                                     xhttp.send();
                                 }
@@ -107,7 +107,7 @@ $(document).ready(function () {
                             console.log(this);
                         }
                     };
-                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojectinstances?id=${projectID}`, true);
+                    xhttp.open("GET", BackEndPoint+`/listprojectinstances?id=${projectID}`, true);
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.send();
                 });
@@ -119,7 +119,7 @@ $(document).ready(function () {
                 reAuth();
             }
         };
-        xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listprojects", true);
+        xhttp.open("GET", BackEndPoint+"/listprojects", true);
         xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
         xhttp.send();
     }
@@ -165,7 +165,7 @@ function reAuth() {
             window.location.href = ('login.html');
         }
     };
-    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+    xhttp.open("POST", BackEndPoint+"/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
 }

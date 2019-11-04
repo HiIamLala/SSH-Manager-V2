@@ -1,8 +1,8 @@
 var error_log_stream = require('fs').createWriteStream("./log/error.txt", { flags: 'a' });
 var AWS = require('aws-sdk');
 AWS.config = new AWS.Config();
-AWS.config.accessKeyId = "AKIA6PJJKSV6H7EXRAXY";
-AWS.config.secretAccessKey = "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";
+AWS.config.accessKeyId = "[accesskey]";
+AWS.config.secretAccessKey = "[secretkey]";
 var s3 = new AWS.S3();
 
 function upload(filepath){

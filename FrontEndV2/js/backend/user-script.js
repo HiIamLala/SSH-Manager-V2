@@ -39,7 +39,7 @@ $(document).ready(function () {
                         noti(new Date().getTime(),"<font color='red'>Fail</font>", this.responseText);
                     }
                 }
-                xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/register", true);
+                xhttp.open("POST", BackEndPoint+"/register", true);
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                 xhttp.send(data);
@@ -116,7 +116,7 @@ function initeUserList() {
                                         reAuth();
                                     }
                                 }
-                                xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/updateuserdetail", true);
+                                xhttp.open("POST", BackEndPoint+"/updateuserdetail", true);
                                 xhttp.setRequestHeader("Content-Type", "application/json");
                                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                                 xhttp.send(data);
@@ -140,7 +140,7 @@ function initeUserList() {
                                         console.log(this);
                                     }
                                 }
-                                xhttp.open("GET", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/removeuser?username="+username, true);
+                                xhttp.open("GET", BackEndPoint+"/removeuser?username="+username, true);
                                 xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                                 xhttp.send();
                             });
@@ -152,7 +152,7 @@ function initeUserList() {
                             noti(new Date().getTime(),"<font color='red'>Fail</font>", JSON.parse(this.responseText).errorMessage);
                         }
                     }
-                    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getuserdetail?username=${username}`, true);
+                    xhttp.open("GET", BackEndPoint+`/getuserdetail?username=${username}`, true);
                     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
                     xhttp.send();
                 }
@@ -162,7 +162,7 @@ function initeUserList() {
             reAuth();
         }
     };
-    xhttp.open("GET", `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getalluserdetail`, true);
+    xhttp.open("GET", BackEndPoint+`/getalluserdetail`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 };
@@ -200,7 +200,7 @@ function reAuth() {
             window.location.href = ('login.html');
         }
     };
-    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+    xhttp.open("POST", BackEndPoint+"/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
 }

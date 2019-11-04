@@ -1,3 +1,4 @@
+const BackEndPoint = "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta";
 document.addEventListener("DOMContentLoaded", function () {
     try{
         var Auth = JSON.parse(window.localStorage.getItem("Auth"));
@@ -23,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = ('login.html');
                 }
             };
-            xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+            xhttp.open("POST", BackEndPoint+"/reauth", true);
             xhttp.setRequestHeader("Content-Type","application/json");
             xhttp.send(data);
         }

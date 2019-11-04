@@ -47,7 +47,7 @@ function reAuth(){
             window.location.href = ('login.html');
         }
     };
-    xhttp.open("POST", "https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/reauth", true);
+    xhttp.open("POST", BackEndPoint+"/reauth", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(data);
 }
@@ -100,7 +100,7 @@ function initProjectDetail(){
             reAuth();
         }
     };
-    xhttp.open('GET', 'https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/projectdetail?id=' + parseURLParams(window.location.href).projectid, true);
+    xhttp.open('GET', BackEndPoint+'/projectdetail?id=' + parseURLParams(window.location.href).projectid, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 }
@@ -134,7 +134,7 @@ function initInstanceDetail() {
             noti(new Date().getTime(),`<font color="red">Error</font>`,this.responseText);
         }
     }
-    xhttp.open("GET",`https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
+    xhttp.open("GET",BackEndPoint+`/getinstancedetail?projectid=${projectID}&instanceid=${instanceID}`,true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
 } 
@@ -215,7 +215,7 @@ function initLogList(){
             noti(new Date().getTime(), `<font color="red">Error</font>`, this.responseText);
         }
     };
-    xhttp.open('GET', `https://v7gmuisen3.execute-api.ap-southeast-1.amazonaws.com/beta/listinstancelog?projectid=${parseURLParams(window.location.href).projectid}&instanceid=${parseURLParams(window.location.href).instanceid}`, true);
+    xhttp.open('GET', BackEndPoint+`/listinstancelog?projectid=${parseURLParams(window.location.href).projectid}&instanceid=${parseURLParams(window.location.href).instanceid}`, true);
     xhttp.setRequestHeader("token", JSON.parse(window.localStorage.getItem("Auth")).IdToken);
     xhttp.send();
     $('#dataTable tbody').unbind();
