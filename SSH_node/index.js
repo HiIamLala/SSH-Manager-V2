@@ -17,27 +17,6 @@ var init = function(){
                 client.join(data);
                 client.emit('data','You have joined session ' + data);
             })
-            // client.on('pingserver',function(data){
-            //     client.emit('repping', "OK");
-            //     var props = JSON.parse(data);
-            //     query.authAccessToken(props.accesstoken, (err,data)=>{
-            //         if(err){
-            //             client.disconnect();
-            //             console.log(err);
-            //         }
-            //         else {
-            //             var tcpp = require('tcp-ping');
-            //             tcpp.probe('35.198.208.93', 80, function(err, available) {
-            //                 console.log(available);
-            //                 client.emit('repping',JSON.stringify(available));
-            //             });
-            //             tcpp.ping({ address: '35.198.208.93' }, function(err, data) {
-            //                 console.log(data);
-            //                 client.emit('repping',JSON.stringify(data));
-            //             });
-            //         }
-            //     })
-            // });
             client.on('setup_new_connection', function (data) {
                 session_prop = JSON.parse(data);
                 if(session_prop.token && session_prop.access){
@@ -88,19 +67,22 @@ var init = function(){
                                                         client.disconnect();
                                                         conn1.end();
                                                     }
-                                                    if(result.SSHPassword){
-                                                        conn2.connect({
-                                                            sock: bastionStream,
-                                                            username: result.InstanceProps.InstanceUser,
-                                                            password: result.SSHPassword,
-                                                        });
-                                                    }
                                                     else{
-                                                        conn2.connect({
-                                                            sock: bastionStream,
-                                                            username: result.InstanceProps.InstanceUser,
-                                                            privateKey: result.SSHKey,
-                                                        });
+                                                        client.emit('data',"Connected to bastion host.");
+                                                        if(result.SSHPassword){
+                                                            conn2.connect({
+                                                                sock: bastionStream,
+                                                                username: result.InstanceProps.InstanceUser,
+                                                                password: result.SSHPassword,
+                                                            });
+                                                        }
+                                                        else{
+                                                            conn2.connect({
+                                                                sock: bastionStream,
+                                                                username: result.InstanceProps.InstanceUser,
+                                                                privateKey: result.SSHKey,
+                                                            });
+                                                        }
                                                     }
                                                 });
                                             }).connect({
@@ -117,19 +99,22 @@ var init = function(){
                                                         client.disconnect();
                                                         conn1.end();
                                                     }
-                                                    if(result.SSHPassword){
-                                                        conn2.connect({
-                                                            sock: bastionStream,
-                                                            username: result.InstanceProps.InstanceUser,
-                                                            password: result.SSHPassword,
-                                                        });
-                                                    }
                                                     else{
-                                                        conn2.connect({
-                                                            sock: bastionStream,
-                                                            username: result.InstanceProps.InstanceUser,
-                                                            privateKey: result.SSHKey,
-                                                        });
+                                                        client.emit('data',"Connected to bastion host.");
+                                                        if(result.SSHPassword){
+                                                            conn2.connect({
+                                                                sock: bastionStream,
+                                                                username: result.InstanceProps.InstanceUser,
+                                                                password: result.SSHPassword,
+                                                            });
+                                                        }
+                                                        else{
+                                                            conn2.connect({
+                                                                sock: bastionStream,
+                                                                username: result.InstanceProps.InstanceUser,
+                                                                privateKey: result.SSHKey,
+                                                            });
+                                                        }
                                                     }
                                                 });
                                             }).connect({
