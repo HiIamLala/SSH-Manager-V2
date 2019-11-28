@@ -1,4 +1,4 @@
-const BackEndPoint = "https://69ffs8hywe.execute-api.ap-southeast-1.amazonaws.com/beta";
+const BackEndPoint = "NEED CHANGE";
 document.addEventListener("DOMContentLoaded", function () {
     try{
         var Auth = JSON.parse(window.localStorage.getItem("Auth"));
