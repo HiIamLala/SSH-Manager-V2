@@ -1,8 +1,12 @@
+const ssh_bucket_log = "Need to change"
+//Change bucket here
+
+
 var error_log_stream = require('fs').createWriteStream("./log/error.txt", { flags: 'a' });
 var AWS = require('aws-sdk');
-AWS.config = new AWS.Config();
-AWS.config.accessKeyId = "[accesskey]";
-AWS.config.secretAccessKey = "[secretkey]";
+// AWS.config = new AWS.Config();
+// AWS.config.accessKeyId = "[accesskey]";
+// AWS.config.secretAccessKey = "[secretkey]";
 var s3 = new AWS.S3();
 
 function upload(filepath){
@@ -10,7 +14,7 @@ function upload(filepath){
         var time = getTime();
         var params = {
             Body: require('fs').readFileSync(filepath, "binary"),
-            Bucket: "ssh-manager-log",
+            Bucket: ssh_bucket_log,
             Key: filepath.slice(6)
         };
         s3.putObject(params, function(err, data) {

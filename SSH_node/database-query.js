@@ -1,13 +1,18 @@
+const userPoolId = "Need change";
+const dynamodb_table = "Need change"
+const dbregion = "Need change"
+
+//Need change here
+
 var error_log_stream = require('fs').createWriteStream("./log/error.txt", { flags: 'a' });
 var AWS = require('aws-sdk');
-AWS.config = new AWS.Config();
-AWS.config.accessKeyId = "[accesskey]";
-AWS.config.secretAccessKey = "[secretkey]";
+// AWS.config = new AWS.Config();
+// AWS.config.accessKeyId = "[accesskey]";
+// AWS.config.secretAccessKey = "[secretkey]";
 var dbconverter = AWS.DynamoDB.Converter;
 var db = new AWS.DynamoDB({
-    region: "ap-southeast-1"
+    region: dbregion
 });
-var userPoolId = "ap-southeast-1_1nyDJZauN";
 
 function ssh(accessToken, token, callback) {
     try {
@@ -147,7 +152,7 @@ function clearToken(projectID, instanceID, username, callback) {
     var time = getTime();
     var token = "Null";
     var params = {
-        TableName: "SSHM_Projects",
+        TableName: dynamodb_table,
         Key: {
             'ID': { N: String(projectID) }
         },
@@ -184,7 +189,7 @@ function clearToken(projectID, instanceID, username, callback) {
 function getInstanceDetail(projectID, instanceID, callback) {
     var time = getTime();
     var params = {
-        TableName: "SSHM_Projects",
+        TableName: dynamodb_table,
         Key: {
             'ID': { N: String(projectID) }
         },

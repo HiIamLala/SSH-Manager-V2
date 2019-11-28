@@ -3892,6 +3892,87 @@
                     "id": "920c9e5b-8984-441c-a05c-2c38bfca3f97"
                 }
             }
+        },
+        "ADMINGROUP": {
+            "Type": "AWS::Cognito::UserPoolGroup",
+            "Properties": {
+                "Description": "SSH Administrator user",
+                "GroupName": "admin",
+                "Precedence": 0,
+                "UserPoolId": {
+                    "Ref": "USERPOOL"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9aef873d-cf73-436c-bb01-75688169c742"
+                }
+            }
+        },
+        "ADMINUSER": {
+            "Type": "AWS::Cognito::UserPoolUser",
+            "Properties": {
+                "DesiredDeliveryMediums": [
+                    "EMAIL"
+                ],
+                "UserAttributes": [
+                    {
+                        "Name": "email",
+                        "Value": {
+                            "Ref": "Email"
+                        }
+                    }
+                ],
+                "Username": "root",
+                "UserPoolId": {
+                    "Ref": "USERPOOL"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "318d85e9-b2ad-4056-b703-e6e4bf37ee73"
+                }
+            }
+        },
+        "ADDUSERTOGROUP": {
+            "Type": "AWS::Cognito::UserPoolUserToGroupAttachment",
+            "Properties": {
+                "GroupName": {
+                    "Ref": "ADMINGROUP"
+                },
+                "Username": {
+                    "Ref": "ADMINUSER"
+                },
+                "UserPoolId": {
+                    "Ref": "USERPOOL"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "ef57b60b-0631-4fee-81ab-c84cdf67ce26"
+                }
+            }
+        },
+        "LAMBDAPERMISSION": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": { "Fn::GetAtt": [ "LAMBDAFUNCTION", "Arn" ] },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": { "Fn::Join": [ "", [
+                    "arn:aws:execute-api:",
+                    { "Ref": "AWS::Region" }, ":",
+                    { "Ref": "AWS::AccountId" }, ":",
+                    { "Ref": "APIGATEWAY" },
+                    "/*/*/*"
+                ] ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "cc20db4c-fbe9-46e3-97ea-a4a75785e0b7"
+                }
+            }
         }
     },
     "Parameters": {
@@ -3918,6 +3999,10 @@
         "UserPoolName": {
             "Type": "String",
             "Description": "Enter name of User Pool"
+        },
+        "Email": {
+            "Type": "String",
+            "Description": "Enter email to receive root user"
         }
     },
     "Metadata": {
@@ -3940,7 +4025,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": -50,
+                    "x": 60,
                     "y": 90
                 },
                 "z": 1,
@@ -3964,7 +4049,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 200,
+                    "x": 210,
                     "y": 90
                 },
                 "z": 1,
@@ -3977,7 +4062,7 @@
                 },
                 "position": {
                     "x": 80,
-                    "y": -130
+                    "y": -120
                 },
                 "z": 1,
                 "embeds": []
@@ -3988,7 +4073,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 200,
+                    "x": 210,
                     "y": 180
                 },
                 "z": 1,
@@ -4000,11 +4085,58 @@
                     "height": 60
                 },
                 "position": {
-                    "x": -50,
+                    "x": 60,
                     "y": 180
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
+            },
+            "318d85e9-b2ad-4056-b703-e6e4bf37ee73": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 300,
+                    "y": -20
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "9aef873d-cf73-436c-bb01-75688169c742": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 300,
+                    "y": 90
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "ef57b60b-0631-4fee-81ab-c84cdf67ce26": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 390,
+                    "y": 40
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "cc20db4c-fbe9-46e3-97ea-a4a75785e0b7": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -74,
+                    "y": 90
+                },
+                "z": 0
             }
         }
     }
